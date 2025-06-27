@@ -38,15 +38,16 @@ export default function Login() {
 
   // On mount, fetch CSRF token from backend to set cookie
   useEffect(() => {
+    console.log('Fetching CSRF token...');
     fetch('https://softsteve.pythonanywhere.com/api/csrf/', {
       credentials: 'include',
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
     })
       .then(res => {
+        console.log('CSRF fetch response:', res);
         if (res.ok) {
           const token = getCsrfTokenFromCookie();
+          console.log('Extracted CSRF token:', token);
           if (token) {
             setCsrfReady(true);
           } else {
@@ -56,7 +57,8 @@ export default function Login() {
           setError('Failed to fetch CSRF token.');
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.error('CSRF fetch error:', err);
         setError('Network error while fetching CSRF token.');
       });
   }, []);
@@ -66,6 +68,7 @@ export default function Login() {
     setError('');
 
     const csrfToken = getCsrfTokenFromCookie();
+     console.log('CSRF token for submit:', csrfToken);
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
       return;
