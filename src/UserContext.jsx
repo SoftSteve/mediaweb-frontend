@@ -12,7 +12,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await fetch('http://softsteve.pythonanywhere.com/api/auth/session/', {
+        const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
           credentials: 'include',
         });
         if (res.ok) {

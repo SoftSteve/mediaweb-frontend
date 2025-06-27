@@ -61,7 +61,7 @@ export default function CreateModal({ handleSpaceCreated, isOpen, onClose }) {
   let response;
 
   try {
-    response = await fetch('http://softsteve.pythonanywhere.com/api/eventspace/', {
+    response = await fetch('https://softsteve.pythonanywhere.com/api/eventspace/', {
       method: 'POST',
       body: formData,
       credentials: 'include',

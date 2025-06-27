@@ -28,7 +28,7 @@ export default function Login() {
   }
 
   useEffect(() => {
-    fetch('http://softsteve.pythonanywhere.com/api/csrf/', {
+    fetch('https://softsteve.pythonanywhere.com/api/csrf/', {
       credentials: 'include',
     })
       .then(res => {
@@ -53,7 +53,7 @@ export default function Login() {
     }
 
     try {
-      const res = await fetch('http://softsteve.pythonanywhere.com/api/auth/login/', {
+      const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,14 +69,14 @@ export default function Login() {
         return;
       }
 
-      const userRes = await fetch('http://softsteve.pythonanywhere.com/api/auth/session/', {
+      const userRes = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
         credentials: 'include',
       });
 
       const userData = await userRes.json();
       setUser(userData);
       if (spaceCode) {
-        const res = await fetch(`http://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
+        const res = await fetch(`https://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
           credentials: 'include',
           headers: {
             'X-CSRFToken': getCsrfTokenFromCookie(),

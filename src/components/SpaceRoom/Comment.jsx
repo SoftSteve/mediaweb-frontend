@@ -26,7 +26,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
             const fetchComments = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch(`http://softsteve.pythonanywhere.com/api/posts/${postId}/`, {
+                    const response = await fetch(`https://softsteve.pythonanywhere.com/api/posts/${postId}/`, {
                         credentials: 'include'
                     });
                     const data = await response.json();
@@ -55,7 +55,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
         setError('');
 
         try {
-            const response = await fetch('http://softsteve.pythonanywhere.com/api/comments/', {
+            const response = await fetch('https://softsteve.pythonanywhere.com/api/comments/', {
             method: 'POST',
             credentials: 'include',
             headers: {

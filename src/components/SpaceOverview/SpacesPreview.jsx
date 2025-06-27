@@ -10,7 +10,7 @@ export default function SpacesPreview() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get('http://softsteve.pythonanywhere.com/api/eventspace/', {
+        axios.get('https://softsteve.pythonanywhere.com/api/eventspace/', {
             withCredentials: true
         })
             .then(response => {

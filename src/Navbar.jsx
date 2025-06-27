@@ -15,7 +15,7 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   async function handleLogout() {
-    await fetch('http://softsteve.pythonanywhere.com/api/auth/logout/', {
+    await fetch('https://softsteve.pythonanywhere.com/api/auth/logout/', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -83,7 +83,7 @@ export default function NavBar() {
                 <div className='w-12 h-12 rounded-full bg-cover bg-center bg-gray-600'
                   style={{
                     backgroundImage: user?.profile_picture
-                      ? `url(http://softsteve.pythonanywhere.com${user.profile_picture})`
+                      ? `url(https://softsteve.pythonanywhere.com${user.profile_picture})`
                       : `url('/hs-4.jpg')`,
                   }}
                 ></div>

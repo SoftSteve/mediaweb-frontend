@@ -17,7 +17,7 @@ export default function MySpaces() {
 
   useEffect(() => {
     axios
-      .get("http://softsteve.pythonanywhere.com/api/eventspace/", { withCredentials: true })
+      .get("https://softsteve.pythonanywhere.com/api/eventspace/", { withCredentials: true })
       .then(res => setSpaces(res.data))
       .catch(err => setError(err));
   }, []);

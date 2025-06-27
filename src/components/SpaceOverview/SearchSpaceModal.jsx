@@ -18,7 +18,7 @@ export default function SearchSpaceModal({isOpen, onClose}) {
     const lookupSpace = async (code) => {
         try {
         const response = await fetch(
-            `http://softsteve.pythonanywhere.com/api/space-lookup/?code=${code}`,
+            `https://softsteve.pythonanywhere.com/api/space-lookup/?code=${code}`,
             {
             credentials: 'include',
             headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },

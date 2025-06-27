@@ -23,7 +23,7 @@ export default function SpaceRoom() {
     async function fetchEventSpace() {
       try {
         const res  = await fetch(
-          `http://softsteve.pythonanywhere.com/api/eventspace/${id}/`,
+          `https://softsteve.pythonanywhere.com/api/eventspace/${id}/`,
           { credentials: 'include' }
         );
         if (!res.ok) throw new Error('Failed to fetch space');
@@ -44,7 +44,7 @@ export default function SpaceRoom() {
 
     try {
       const res = await fetch(
-        `http://softsteve.pythonanywhere.com/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
+        `https://softsteve.pythonanywhere.com/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
         { credentials: 'include' }
       );
       const data     = await res.json();
@@ -77,7 +77,7 @@ export default function SpaceRoom() {
   const handleDeletePost = async (postId) => {
     try {
       const res = await fetch(
-        `http://softsteve.pythonanywhere.com/api/posts/${postId}/`,
+        `https://softsteve.pythonanywhere.com/api/posts/${postId}/`,
         {
           method: 'DELETE',
           credentials: 'include',
