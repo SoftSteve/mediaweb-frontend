@@ -1,39 +1,38 @@
+// src/Signin.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Divider from '@mui/material/Divider';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-
-import { useUser }          from './UserContext.jsx';
-import ChoiceModal          from './components/SignIn/CreateAccountModal.jsx';
-import IconButton           from './components/IconButton.jsx';
-import { GoogleIcon }       from './components/CustomIcons.tsx';
-
-const API = 'https://softsteve.pythonanywhere.com';
+import { API_URL } from './config.js';         // ← Import API_URL
+import { useUser } from './UserContext.jsx';
+import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
+import IconButton from './components/IconButton.jsx';
+import { GoogleIcon } from './components/CustomIcons.tsx';
 
 export default function Signin() {
-  /* ───────── state ───────── */
-  const [email,        setEmail]       = useState('');
-  const [password,     setPassword]    = useState('');
-  const [showPassword, setShowPassword]= useState(false);
-  const [rememberMe,   setRememberMe]  = useState(false);
-  const [isModalOpen,  setIsModalOpen] = useState(false);
-  const [csrfToken,    setCsrfToken]   = useState('');
-  const [csrfReady,    setCsrfReady]   = useState(false);
-  const [error,        setError]       = useState('');
+  /* ───────────────────── state ───────────────────── */
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [csrfToken, setCsrfToken] = useState('');
+  const [csrfReady, setCsrfReady] = useState(false);
+  const [error, setError] = useState('');
 
-  const navigate   = useNavigate();
-  const location   = useLocation();
-  const spaceCode  = location.state?.spaceCode;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const spaceCode = location.state?.spaceCode;
   const { setUser } = useUser();
 
-  /* ───────── fetch CSRF once ───────── */
+  /* ───────────────────── fetch CSRF once ───────────────────── */
   useEffect(() => {
-    fetch(`${API}/api/csrf/`, {
+    fetch(`${API_URL}/api/csrf/`, {
       credentials: 'include',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     })
-      .then(r => r.json())
+      .then((r) => r.json())
       .then(({ csrfToken }) => {
         if (csrfToken) {
           setCsrfToken(csrfToken);
@@ -45,18 +44,17 @@ export default function Signin() {
       .catch(() => setError('Network error while fetching CSRF token.'));
   }, []);
 
-  /* ───────── submit ───────── */
+  /* ───────────────────── form submit ───────────────────── */
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
-
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
       return;
     }
 
-    /* 1️⃣  login POST */
-    await fetch(`${API_URL}/api/auth/login/`, {
+    // ← Declare loginRes here
+    const loginRes = await fetch(`${API_URL}/api/auth/login/`, {
       method: 'POST',
       credentials: 'include',
       mode: 'cors',
@@ -73,9 +71,10 @@ export default function Signin() {
       return;
     }
 
-    /* 2️⃣  fetch session *only now* */
-    const sessionRes = await fetch(`${API}/api/auth/session/`, {
+    /* pull session */
+    const sessionRes = await fetch(`${API_URL}/api/auth/session/`, {
       credentials: 'include',
+      mode: 'cors',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     });
 
@@ -87,15 +86,16 @@ export default function Signin() {
     const userData = await sessionRes.json();
     setUser(userData);
 
-    /* 3️⃣  optional redirect via space code */
+    /* optional redirect via space code */
     if (spaceCode) {
       const lookup = await fetch(
-        `${API}/api/space-lookup/?code=${spaceCode}`,
+        `${API_URL}/api/space-lookup/?code=${spaceCode}`,
         {
           credentials: 'include',
+          mode: 'cors',
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken'     : csrfToken,
+            'X-CSRFToken': csrfToken,
           },
         }
       );
@@ -108,7 +108,7 @@ export default function Signin() {
     navigate('/');
   }
 
-  /* ───────── UI ───────── */
+  /* ───────────────────── UI ───────────────────── */
   if (!csrfReady)
     return <div className="p-6 text-white">Loading security…</div>;
 
