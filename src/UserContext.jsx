@@ -1,36 +1,36 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { API_URL } from './config';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_URL } from './config.js';
 
 const UserContext = createContext();
-
-export function useUser() { return useContext(UserContext); }
+export function useUser() {
+  return useContext(UserContext);
+}
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchSession() {
-      try {
-        const res = await fetch(`${API_URL}/api/auth/session/`, {
-          method: 'GET',
-          credentials: 'include',
-          mode: 'cors',
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          console.log('[DEBUG] Session fetched:', data);
+    // Only try to rehydrate if the session cookie is present
+    if (document.cookie.includes('sessionid=')) {
+      fetch(`${API_URL}/api/auth/session/`, {
+        method: 'GET',
+        credentials: 'include',
+        mode: 'cors',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(`Status ${res.status}`);
+          return res.json();
+        })
+        .then((data) => {
+          console.debug('[UserContext] Rehydrated session:', data);
           setUser(data);
-        } else {
-          console.log('[DEBUG] Session fetch failed:', res.status);
+        })
+        .catch((err) => {
+          console.debug('[UserContext] No valid session:', err);
           setUser(null);
-        }
-      } catch (err) {
-        console.error('[DEBUG] Error fetching session:', err);
-        setUser(null);
-      }
+        });
     }
-    fetchSession();
   }, []);
 
   return (
