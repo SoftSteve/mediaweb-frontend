@@ -56,13 +56,14 @@ export default function Signin() {
     }
 
     /* 1️⃣  login POST */
-    const loginRes = await fetch(`${API}/api/auth/login/`, {
+    await fetch(`${API_URL}/api/auth/login/`, {
       method: 'POST',
       credentials: 'include',
+      mode: 'cors',
       headers: {
-        'Content-Type'      : 'application/json',
-        'X-CSRFToken'       : csrfToken,
-        'X-Requested-With'  : 'XMLHttpRequest',
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify({ email, password }),
     });

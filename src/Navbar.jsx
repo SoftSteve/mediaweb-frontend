@@ -15,17 +15,33 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   async function handleLogout() {
-    await fetch('https://softsteve.pythonanywhere.com/api/auth/logout/', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCsrfTokenFromCookie(),
-      },
-    });
-    setUser(null);
-    setMenuOpen(false);
-    navigate('/')
+    console.log('[DEBUG] Attempting logout...');
+
+    try {
+      const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/logout/', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfTokenFromCookie(),
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+
+      console.log('[DEBUG] Logout response status:', res.status);
+      const data = await res.json().catch(() => ({}));
+      console.log('[DEBUG] Logout response data:', data);
+
+      if (res.ok) {
+        setUser(null);
+        setMenuOpen(false);
+        navigate('/');
+      } else {
+        console.error('[DEBUG] Logout failed:', data);
+      }
+    } catch (err) {
+      console.error('[DEBUG] Network error on logout:', err);
+    }
   }
 
   function getCsrfTokenFromCookie() {
