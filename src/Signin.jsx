@@ -114,8 +114,6 @@ export default function Login() {
     }
   };
 
-  if (!csrfReady) return <div className="text-white p-4">Loading security...</div>;
-
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#ece7e3] mt-20">
       <div className="flex flex-col px-6 gap-2">
