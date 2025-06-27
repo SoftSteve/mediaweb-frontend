@@ -1,140 +1,111 @@
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Divider from '@mui/material/Divider';
-import { GoogleIcon } from './components/CustomIcons.tsx';
-import IconButton from './components/IconButton.jsx';
-import { useNavigate, useLocation } from 'react-router-dom';
-import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
-import { useState, useEffect } from 'react';
-import { useUser } from './UserContext.jsx';
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
-export default function Login() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
-  const [csrfReady, setCsrfReady] = useState(false);
+import { useUser }          from './UserContext.jsx';
+import ChoiceModal          from './components/SignIn/CreateAccountModal.jsx';
+import IconButton           from './components/IconButton.jsx';
+import { GoogleIcon }       from './components/CustomIcons.tsx';
 
-  const location = useLocation();
-  const spaceCode = location.state?.spaceCode;
-  const navigate = useNavigate();
+const API = 'https://softsteve.pythonanywhere.com';
+
+export default function Signin() {
+  /* ───────────────────── state ───────────────────── */
+  const [email,         setEmail]         = useState('');
+  const [password,      setPassword]      = useState('');
+  const [showPassword,  setShowPassword]  = useState(false);
+  const [rememberMe,    setRememberMe]    = useState(false);
+  const [isModalOpen,   setIsModalOpen]   = useState(false);
+  const [csrfToken,     setCsrfToken]     = useState('');
+  const [csrfReady,     setCsrfReady]     = useState(false);
+  const [error,         setError]         = useState('');
+
+  const navigate   = useNavigate();
+  const location   = useLocation();
+  const spaceCode  = location.state?.spaceCode;
   const { setUser } = useUser();
 
-  // Robust CSRF token extraction from cookies
-  function getCsrfTokenFromCookie() {
-    const name = 'csrftoken=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookies = decodedCookie.split(';');
-    for (let cookie of cookies) {
-      cookie = cookie.trim();
-      if (cookie.startsWith(name)) {
-        return cookie.substring(name.length);
-      }
-    }
-    return null;
-  }
-
-  // On mount, fetch CSRF token from backend to set cookie
+  /* ───────────────────── fetch CSRF once ───────────────────── */
   useEffect(() => {
-    console.log('Fetching CSRF token...');
-    fetch('https://softsteve.pythonanywhere.com/api/csrf/', {
+    fetch(`${API}/api/csrf/`, {
       credentials: 'include',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     })
-      .then(res => {
-        console.log('CSRF fetch response:', res);
-        if (res.ok) {
-          const token = getCsrfTokenFromCookie();
-          console.log('Extracted CSRF token:', token);
-          if (token) {
-            setCsrfReady(true);
-          } else {
-            setError('CSRF token not found in cookie.');
-          }
+      .then(r => r.json())
+      .then(({ csrfToken }) => {
+        if (csrfToken) {
+          setCsrfToken(csrfToken);
+          setCsrfReady(true);
         } else {
-          setError('Failed to fetch CSRF token.');
+          setError('Could not obtain CSRF token.');
         }
       })
-      .catch(err => {
-        console.error('CSRF fetch error:', err);
-        setError('Network error while fetching CSRF token.');
-      });
+      .catch(() => setError('Network error while fetching CSRF token.'));
   }, []);
 
-  const handleSubmit = async (e) => {
+  /* ───────────────────── form submit ───────────────────── */
+  async function handleSubmit(e) {
     e.preventDefault();
     setError('');
-
-    const csrfToken = getCsrfTokenFromCookie();
-     console.log('CSRF token for submit:', csrfToken);
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
       return;
     }
 
-    try {
-      // Login POST request with CSRF token
-      const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-      });
+    /* login */
+    const loginRes = await fetch(`${API}/api/auth/login/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken'      : csrfToken,
+        'X-Requested-With' : 'XMLHttpRequest',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!res.ok) {
-        setError('Email or password is incorrect.');
-        return;
-      }
-
-      // Fetch user session info after successful login
-      const userRes = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
-        credentials: 'include',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      });
-
-      if (!userRes.ok) {
-        setError('Failed to fetch user session.');
-        return;
-      }
-
-      const userData = await userRes.json();
-      setUser(userData);
-
-      // Optional: handle redirect if spaceCode is provided
-      if (spaceCode) {
-        const res = await fetch(`https://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
-          credentials: 'include',
-          headers: {
-            'X-CSRFToken': getCsrfTokenFromCookie(),
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          navigate(`/space/${data.event_id}`);
-          return;
-        } else {
-          navigate('/');
-          return;
-        }
-      } else {
-        navigate('/');
-      }
-    } catch {
-      setError('Network error');
+    if (!loginRes.ok) {
+      setError('Email or password is incorrect.');
+      return;
     }
-  };
 
-  if (!csrfReady) return <div className="text-white p-4">Loading security...</div>;
+    /* pull session */
+    const sessionRes = await fetch(`${API}/api/auth/session/`, {
+      credentials: 'include',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+
+    if (!sessionRes.ok) {
+      setError('Failed to fetch user session.');
+      return;
+    }
+
+    const userData = await sessionRes.json();
+    setUser(userData);
+
+    /* optional redirect via space code */
+    if (spaceCode) {
+      const lookup = await fetch(`${API}/api/space-lookup/?code=${spaceCode}`, {
+        credentials: 'include',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken'     : csrfToken,
+        },
+      });
+      if (lookup.ok) {
+        const { event_id } = await lookup.json();
+        navigate(`/space/${event_id}`);
+        return;
+      }
+    }
+    navigate('/');
+  }
+
+  /* ───────────────────── UI ───────────────────── */
+  if (!csrfReady)
+    return <div className="p-6 text-white">Loading security…</div>;
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#ece7e3] mt-20">
