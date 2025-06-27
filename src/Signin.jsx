@@ -30,16 +30,20 @@ export default function Login() {
   useEffect(() => {
     fetch('https://softsteve.pythonanywhere.com/api/csrf/', {
       credentials: 'include',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     })
       .then(res => {
         if (res.ok) {
           const token = getCsrfTokenFromCookie();
           if (token) {
             setCsrfReady(true);
-          } else {
           }
-        } else {
         }
+      })
+      .catch(() => {
+        setError('Failed to load CSRF token.');
       });
   }, []);
 
@@ -49,6 +53,7 @@ export default function Login() {
 
     const csrfToken = getCsrfTokenFromCookie();
     if (!csrfToken) {
+      setError('CSRF token missing');
       return;
     }
 
@@ -58,28 +63,38 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
+          'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
       });
 
       if (!res.ok) {
-        const data = await res.json();
         setError('Email or password is incorrect.');
         return;
       }
 
       const userRes = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
         credentials: 'include',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
       });
+
+      if (!userRes.ok) {
+        setError('Failed to fetch user session.');
+        return;
+      }
 
       const userData = await userRes.json();
       setUser(userData);
+
       if (spaceCode) {
         const res = await fetch(`https://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
           credentials: 'include',
           headers: {
             'X-CSRFToken': getCsrfTokenFromCookie(),
+            'X-Requested-With': 'XMLHttpRequest',
           },
         });
 
@@ -88,11 +103,11 @@ export default function Login() {
           navigate(`/space/${data.event_id}`);
           return;
         } else {
-          navigate('/'); 
+          navigate('/');
           return;
         }
       } else {
-        navigate('/'); 
+        navigate('/');
       }
     } catch (err) {
       setError('Network error');
