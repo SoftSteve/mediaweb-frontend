@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
-const UserContext = createContext(null);
-const API = 'https://softsteve.pythonanywhere.com';
+const UserContext = createContext();
 
 export function useUser() {
   return useContext(UserContext);
@@ -9,44 +8,47 @@ export function useUser() {
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  /* ---- fetch session helper ---- */
-  const refreshUser = useCallback(async () => {
-    try {
-      const res = await fetch(`${API}/api/auth/session/`, {
-        credentials: 'include',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-      });
-      if (res.ok) {
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        console.log('[DEBUG] Starting fetch for user session');
+        const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
+          credentials: 'include',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        
+        console.log('[DEBUG] Fetch response status:', res.status);
+        console.log('[DEBUG] Fetch response headers:', [...res.headers.entries()]);
+
+        if (!res.ok) {
+          console.warn('[DEBUG] Session fetch failed with status', res.status);
+          const text = await res.text();
+          console.log('[DEBUG] Response body:', text);
+          setUser(null);
+          return;
+        }
+
         const data = await res.json();
+        console.log('[DEBUG] Session user data:', data);
         setUser(data);
-      } else {
-        // 401/403 means no active session
+
+        // Check cookies available in document.cookie (for debugging in browser)
+        console.log('[DEBUG] document.cookie:', document.cookie);
+      } catch (err) {
+        console.error('[DEBUG] Error fetching session:', err);
         setUser(null);
       }
-    } finally {
-      setLoading(false);
     }
+
+    fetchUser();
   }, []);
 
-  /* ---- logout helper ---- */
-  const logoutUser = async () => {
-    await fetch(`${API}/api/auth/logout/`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
-    });
-    setUser(null);
-  };
-
-  /* ---- initial load ---- */
-  useEffect(() => {
-    refreshUser();
-  }, [refreshUser]);
-
-  /* ---- context value ---- */
-  const value = { user, setUser, refreshUser, logoutUser, loading };
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
