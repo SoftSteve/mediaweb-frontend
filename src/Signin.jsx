@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion';
 import Divider from '@mui/material/Divider';
-import { GoogleIcon, FacebookIcon, GuestIcon } from './components/CustomIcons.tsx';
+import { GoogleIcon } from './components/CustomIcons.tsx';
 import IconButton from './components/IconButton.jsx';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
 import { useState, useEffect } from 'react';
 import { useUser } from './UserContext.jsx';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-
 
 export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,16 +16,27 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [csrfReady, setCsrfReady] = useState(false);
+
   const location = useLocation();
   const spaceCode = location.state?.spaceCode;
   const navigate = useNavigate();
   const { setUser } = useUser();
 
+  // Robust CSRF token extraction from cookies
   function getCsrfTokenFromCookie() {
-    const match = document.cookie.match(/csrftoken=([^;]+)/);
-    return match ? match[1] : null;
+    const name = 'csrftoken=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name)) {
+        return cookie.substring(name.length);
+      }
+    }
+    return null;
   }
 
+  // On mount, fetch CSRF token from backend to set cookie
   useEffect(() => {
     fetch('https://softsteve.pythonanywhere.com/api/csrf/', {
       credentials: 'include',
@@ -39,11 +49,15 @@ export default function Login() {
           const token = getCsrfTokenFromCookie();
           if (token) {
             setCsrfReady(true);
+          } else {
+            setError('CSRF token not found in cookie.');
           }
+        } else {
+          setError('Failed to fetch CSRF token.');
         }
       })
       .catch(() => {
-        setError('Failed to load CSRF token.');
+        setError('Network error while fetching CSRF token.');
       });
   }, []);
 
@@ -53,10 +67,12 @@ export default function Login() {
 
     const csrfToken = getCsrfTokenFromCookie();
     if (!csrfToken) {
-      setError('CSRF token missing');
+      setError('CSRF token missing. Please refresh the page.');
+      return;
     }
 
     try {
+      // Login POST request with CSRF token
       const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/login/', {
         method: 'POST',
         headers: {
@@ -73,6 +89,7 @@ export default function Login() {
         return;
       }
 
+      // Fetch user session info after successful login
       const userRes = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
         credentials: 'include',
         headers: {
@@ -88,6 +105,7 @@ export default function Login() {
       const userData = await userRes.json();
       setUser(userData);
 
+      // Optional: handle redirect if spaceCode is provided
       if (spaceCode) {
         const res = await fetch(`https://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
           credentials: 'include',
@@ -108,10 +126,12 @@ export default function Login() {
       } else {
         navigate('/');
       }
-    } catch (err) {
+    } catch {
       setError('Network error');
     }
   };
+
+  if (!csrfReady) return <div className="text-white p-4">Loading security...</div>;
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#ece7e3] mt-20">
