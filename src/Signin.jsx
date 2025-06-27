@@ -54,7 +54,6 @@ export default function Login() {
     const csrfToken = getCsrfTokenFromCookie();
     if (!csrfToken) {
       setError('CSRF token missing');
-      return;
     }
 
     try {
