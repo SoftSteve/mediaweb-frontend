@@ -12,22 +12,22 @@ import { GoogleIcon }       from './components/CustomIcons.tsx';
 const API = 'https://softsteve.pythonanywhere.com';
 
 export default function Signin() {
-  /* ───────────────────── state ───────────────────── */
-  const [email,         setEmail]         = useState('');
-  const [password,      setPassword]      = useState('');
-  const [showPassword,  setShowPassword]  = useState(false);
-  const [rememberMe,    setRememberMe]    = useState(false);
-  const [isModalOpen,   setIsModalOpen]   = useState(false);
-  const [csrfToken,     setCsrfToken]     = useState('');
-  const [csrfReady,     setCsrfReady]     = useState(false);
-  const [error,         setError]         = useState('');
+  /* ───────── state ───────── */
+  const [email,        setEmail]       = useState('');
+  const [password,     setPassword]    = useState('');
+  const [showPassword, setShowPassword]= useState(false);
+  const [rememberMe,   setRememberMe]  = useState(false);
+  const [isModalOpen,  setIsModalOpen] = useState(false);
+  const [csrfToken,    setCsrfToken]   = useState('');
+  const [csrfReady,    setCsrfReady]   = useState(false);
+  const [error,        setError]       = useState('');
 
   const navigate   = useNavigate();
   const location   = useLocation();
   const spaceCode  = location.state?.spaceCode;
   const { setUser } = useUser();
 
-  /* ───────────────────── fetch CSRF once ───────────────────── */
+  /* ───────── fetch CSRF once ───────── */
   useEffect(() => {
     fetch(`${API}/api/csrf/`, {
       credentials: 'include',
@@ -45,23 +45,24 @@ export default function Signin() {
       .catch(() => setError('Network error while fetching CSRF token.'));
   }, []);
 
-  /* ───────────────────── form submit ───────────────────── */
+  /* ───────── submit ───────── */
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
       return;
     }
 
-    /* login */
+    /* 1️⃣  login POST */
     const loginRes = await fetch(`${API}/api/auth/login/`, {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken'      : csrfToken,
-        'X-Requested-With' : 'XMLHttpRequest',
+        'Content-Type'      : 'application/json',
+        'X-CSRFToken'       : csrfToken,
+        'X-Requested-With'  : 'XMLHttpRequest',
       },
       body: JSON.stringify({ email, password }),
     });
@@ -71,7 +72,7 @@ export default function Signin() {
       return;
     }
 
-    /* pull session */
+    /* 2️⃣  fetch session *only now* */
     const sessionRes = await fetch(`${API}/api/auth/session/`, {
       credentials: 'include',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -85,15 +86,18 @@ export default function Signin() {
     const userData = await sessionRes.json();
     setUser(userData);
 
-    /* optional redirect via space code */
+    /* 3️⃣  optional redirect via space code */
     if (spaceCode) {
-      const lookup = await fetch(`${API}/api/space-lookup/?code=${spaceCode}`, {
-        credentials: 'include',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRFToken'     : csrfToken,
-        },
-      });
+      const lookup = await fetch(
+        `${API}/api/space-lookup/?code=${spaceCode}`,
+        {
+          credentials: 'include',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken'     : csrfToken,
+          },
+        }
+      );
       if (lookup.ok) {
         const { event_id } = await lookup.json();
         navigate(`/space/${event_id}`);
@@ -103,7 +107,7 @@ export default function Signin() {
     navigate('/');
   }
 
-  /* ───────────────────── UI ───────────────────── */
+  /* ───────── UI ───────── */
   if (!csrfReady)
     return <div className="p-6 text-white">Loading security…</div>;
 
