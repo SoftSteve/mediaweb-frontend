@@ -10,7 +10,6 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Only try to rehydrate if the session cookie is present
     if (document.cookie.includes('sessionid=')) {
       fetch(`${API_URL}/api/auth/session/`, {
         method: 'GET',

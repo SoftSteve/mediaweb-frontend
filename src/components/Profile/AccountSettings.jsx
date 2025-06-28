@@ -41,7 +41,7 @@ export default function AccountSettings() {
     }
 
     try {
-        const res = await fetch('http://softsteve.pythonanywhere.com/api/auth/update-account/', {
+        const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/update-account/', {
         method: 'PATCH',
         body: data,
         credentials: 'include',
@@ -73,7 +73,7 @@ export default function AccountSettings() {
             src={
               formData.profile_picture instanceof File
                 ? URL.createObjectURL(formData.profile_picture)
-                : `http://softsteve.pythonanywhere.com${formData.profile_picture}`
+                : `https://softsteve.pythonanywhere.com${formData.profile_picture}`
             }
             alt=""
             className="w-32 h-32 rounded-full bg-primary object-cover border"
