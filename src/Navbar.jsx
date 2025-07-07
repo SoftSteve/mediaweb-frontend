@@ -17,13 +17,21 @@ export default function NavBar() {
   async function handleLogout() {
     console.log('[DEBUG] Attempting logout...');
 
+    function getCsrfTokenFromCookie() {
+      const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+      return match ? decodeURIComponent(match[1]) : null;
+    }
+
+    const csrfToken = getCsrfTokenFromCookie();
+    console.log('[DEBUG] Token being sent:', csrfToken);
+
     try {
       const res = await fetch('https://api.memory-branch.com/api/auth/logout/', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': getCsrfTokenFromCookie(),
+          'X-CSRFToken': csrfToken,
           'X-Requested-With': 'XMLHttpRequest',
         },
       });
@@ -44,10 +52,7 @@ export default function NavBar() {
     }
   }
 
-  function getCsrfTokenFromCookie() {
-  const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
-  return match ? decodeURIComponent(match[1]) : null;
-}
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
