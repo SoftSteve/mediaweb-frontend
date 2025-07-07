@@ -5,6 +5,7 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from './UserContext';
+import { API_URL } from './config';
 
 export default function CreateAccount() {
   const [password, setPassword] = useState('');
@@ -31,7 +32,7 @@ export default function CreateAccount() {
     formData.append('email', email);
 
     try {
-      const response = await fetch('https://softsteve.pythonanywhere.com/api/auth/create-account/', {
+      const response = await fetch(`${API_URL}/api/auth/create-account/`, {
         method: 'POST',
         body: formData,
         credentials: 'include',
