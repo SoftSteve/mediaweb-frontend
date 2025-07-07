@@ -2,15 +2,8 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import { useUser } from '../../UserContext';
-import { API_URL } from '../../config';
 
-const USE_CLIENT_COMPRESSION = false;
 const MAX_IMAGES = 8;
-
-let compress;
-if (USE_CLIENT_COMPRESSION) {
-  import('browser-image-compression').then((mod) => (compress = mod.default));
-}
 
 export default function PostSection({ eventSpaceId, onPostCreated }) {
   const fileRef = useRef();
@@ -23,7 +16,10 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))?.[2];
   const csrftoken = getCookie('csrftoken');
 
-  const handleFileChange = async (e) => {
+  /* --------------------------------------------------
+   *  File handling (no client‑side compression)
+   * --------------------------------------------------*/
+  const handleFileChange = (e) => {
     let selected = Array.from(e.target.files);
 
     if (selected.length > MAX_IMAGES) {
@@ -31,18 +27,13 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
       selected = selected.slice(0, MAX_IMAGES);
     }
 
-    if (USE_CLIENT_COMPRESSION && compress) {
-      selected = await Promise.all(
-        selected.map((f) =>
-          compress(f, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true })
-        )
-      );
-    }
-
     setFiles(selected);
     if (fileRef.current) fileRef.current.value = null;
   };
 
+  /* --------------------------------------------------
+   *  Submit
+   * --------------------------------------------------*/
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!caption && files.length === 0) return;
