@@ -28,7 +28,7 @@ export default function Signin() {
 
   /* ───────────────────── fetch CSRF once ───────────────────── */
   useEffect(() => {
-    fetch(`${API_URL}/api/csrf/`, {
+    fetch(`https://api.memory-branch.com/api/csrf/`, {
       credentials: 'include',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
     })
@@ -72,7 +72,7 @@ export default function Signin() {
     }
 
     /* pull session */
-    const sessionRes = await fetch(`${API_URL}/api/auth/session/`, {
+    const sessionRes = await fetch(`https://api.memory-branch.com/api/auth/session/`, {
       credentials: 'include',
       mode: 'cors',
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
