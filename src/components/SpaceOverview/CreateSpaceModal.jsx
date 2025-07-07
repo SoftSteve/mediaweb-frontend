@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { BsMap, BsPeopleFill } from 'react-icons/bs';
+import { API_URL } from '../../config';
 
 
 export default function CreateModal({ handleSpaceCreated, isOpen, onClose }) {
@@ -61,7 +62,7 @@ export default function CreateModal({ handleSpaceCreated, isOpen, onClose }) {
   let response;
 
   try {
-    response = await fetch('https://softsteve.pythonanywhere.com/api/eventspace/', {
+    response = await fetch(`${API_URL}/api/eventspace/`, {
       method: 'POST',
       body: formData,
       credentials: 'include',

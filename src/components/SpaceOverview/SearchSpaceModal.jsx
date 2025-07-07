@@ -3,6 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import { BsMap, BsPeopleFill} from 'react-icons/bs'
 import { IoMdClose } from 'react-icons/io';
+import { API_URL } from "../../config";
 
 export default function SearchSpaceModal({isOpen, onClose}) {
     const [spaceCode, setSpaceCode] = useState('');
@@ -18,7 +19,7 @@ export default function SearchSpaceModal({isOpen, onClose}) {
     const lookupSpace = async (code) => {
         try {
         const response = await fetch(
-            `https://softsteve.pythonanywhere.com/api/space-lookup/?code=${code}`,
+            `${API_URL}/api/space-lookup/?code=${code}`,
             {
             credentials: 'include',
             headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },

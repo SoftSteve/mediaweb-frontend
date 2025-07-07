@@ -2,6 +2,7 @@ import { DialogPanel, Dialog, DialogTitle, Transition, TransitionChild } from "@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useUser } from "../../UserContext";
 import { IoIosSend } from "react-icons/io";
+import { API_URL } from "../../config";
 
 
 const max_chars = 255
@@ -26,7 +27,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
             const fetchComments = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch(`https://softsteve.pythonanywhere.com/api/posts/${postId}/`, {
+                    const response = await fetch(`${API_URL}/api/posts/${postId}/`, {
                         credentials: 'include'
                     });
                     const data = await response.json();
@@ -55,7 +56,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
         setError('');
 
         try {
-            const response = await fetch('https://softsteve.pythonanywhere.com/api/comments/', {
+            const response = await fetch(`${API_URL}/api/comments/`, {
             method: 'POST',
             credentials: 'include',
             headers: {

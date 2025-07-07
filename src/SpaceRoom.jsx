@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Tabs from './components/SpaceRoom/Tabs';
+import { API_URL } from './config';
 
 const LIMIT = 5;
 
@@ -8,7 +9,7 @@ export default function SpaceRoom() {
   const { id } = useParams();
 
   /* ─────────────── state ─────────────── */
-  const [eventSpace, setEventSpace] = useState(null);       // ⬅️ NEW
+  const [eventSpace, setEventSpace] = useState(null);
   const [posts, setPosts]           = useState([]);
   const [offset, setOffset]         = useState(0);
   const [hasMore, setHasMore]       = useState(true);
@@ -23,7 +24,7 @@ export default function SpaceRoom() {
     async function fetchEventSpace() {
       try {
         const res  = await fetch(
-          `https://softsteve.pythonanywhere.com/api/eventspace/${id}/`,
+          `${API_URL}/api/eventspace/${id}/`,
           { credentials: 'include' }
         );
         if (!res.ok) throw new Error('Failed to fetch space');
@@ -44,7 +45,7 @@ export default function SpaceRoom() {
 
     try {
       const res = await fetch(
-        `https://softsteve.pythonanywhere.com/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
+        `${API_URL}/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
         { credentials: 'include' }
       );
       const data     = await res.json();
@@ -77,7 +78,7 @@ export default function SpaceRoom() {
   const handleDeletePost = async (postId) => {
     try {
       const res = await fetch(
-        `https://softsteve.pythonanywhere.com/api/posts/${postId}/`,
+        `${API_URL}/api/posts/${postId}/`,
         {
           method: 'DELETE',
           credentials: 'include',

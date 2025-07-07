@@ -5,6 +5,7 @@ import { IoSearch, IoShareSocialOutline } from "react-icons/io5";
 import axios from "axios";
 import CreateModal from "./CreateSpaceModal";
 import SearchSpaceModal from "./SearchSpaceModal";
+import { API_URL } from "../../config";
 
 export default function MySpaces() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function MySpaces() {
 
   useEffect(() => {
     axios
-      .get("https://softsteve.pythonanywhere.com/api/eventspace/", { withCredentials: true })
+      .get(`${API_URL}/api/eventspace/`, { withCredentials: true })
       .then(res => setSpaces(res.data))
       .catch(err => setError(err));
   }, []);

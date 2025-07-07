@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SpaceCard from './SpaceCard';
+import { API_URL } from '../../config';
 
 export default function SpacesPreview() {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function SpacesPreview() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get('https://softsteve.pythonanywhere.com/api/eventspace/', {
+        axios.get(`${API_URL}/api/eventspace/`, {
             withCredentials: true
         })
             .then(response => {

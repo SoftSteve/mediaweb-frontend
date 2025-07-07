@@ -1,1 +1,1 @@
-export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+export const API_URL = process.env.REACT_APP_API_URL || 'http://10.0.0.135:8000';
