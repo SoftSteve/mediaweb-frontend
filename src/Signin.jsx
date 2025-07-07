@@ -54,7 +54,7 @@ export default function Signin() {
     }
 
     // ← Declare loginRes here
-    const loginRes = await fetch(`${API_URL}/api/auth/login/`, {
+    const loginRes = await fetch(`https://api.memory-branch.com/api/auth/login/`, {
       method: 'POST',
       credentials: 'include',
       mode: 'cors',
