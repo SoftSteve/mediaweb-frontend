@@ -18,7 +18,7 @@ export default function NavBar() {
     console.log('[DEBUG] Attempting logout...');
 
     try {
-      const res = await fetch('https://softsteve.pythonanywhere.com/api/auth/logout/', {
+      const res = await fetch('https://api.memory-branch.com/api/auth/logout/', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -99,7 +99,7 @@ export default function NavBar() {
                 <div className='w-12 h-12 rounded-full bg-cover bg-center bg-gray-600'
                   style={{
                     backgroundImage: user?.profile_picture
-                      ? `url(https://softsteve.pythonanywhere.com${user.profile_picture})`
+                      ? `url(https://api.memory-branch.com/${user.profile_picture})`
                       : `url('/hs-4.jpg')`,
                   }}
                 ></div>

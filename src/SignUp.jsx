@@ -32,7 +32,7 @@ export default function CreateAccount() {
     formData.append('email', email);
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/create-account/`, {
+      const response = await fetch(`https://api.memory-branch.com/api/auth/create-account/`, {
         method: 'POST',
         body: formData,
         credentials: 'include',
@@ -47,14 +47,14 @@ export default function CreateAccount() {
             throw new Error(data?.error || 'Account creation failed');
         }
         
-        const userRes = await fetch('https://softsteve.pythonanywhere.com/api/auth/session/', {
+        const userRes = await fetch('https://api.memory-branch.com/api/auth/session/', {
         credentials: 'include',
       });
 
       const userData = await userRes.json();
       setUser(userData);
       if (spaceCode) {
-        const res = await fetch(`https://softsteve.pythonanywhere.com/api/space-lookup/?code=${spaceCode}`, {
+        const res = await fetch(`https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`, {
           credentials: 'include',
           headers: {
             'X-CSRFToken': getCsrfTokenFromCookie(),
