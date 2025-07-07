@@ -24,7 +24,7 @@ export default function SpaceRoom() {
     async function fetchEventSpace() {
       try {
         const res  = await fetch(
-          `${API_URL}/api/eventspace/${id}/`,
+          `https://api.memory-branch.com/api/eventspace/${id}/`,
           { credentials: 'include' }
         );
         if (!res.ok) throw new Error('Failed to fetch space');
@@ -45,7 +45,7 @@ export default function SpaceRoom() {
 
     try {
       const res = await fetch(
-        `${API_URL}/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
+        `https://api.memory-branch.com/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
         { credentials: 'include' }
       );
       const data     = await res.json();
@@ -78,7 +78,7 @@ export default function SpaceRoom() {
   const handleDeletePost = async (postId) => {
     try {
       const res = await fetch(
-        `${API_URL}/api/posts/${postId}/`,
+        `https://api.memory-branch.com/api/posts/${postId}/`,
         {
           method: 'DELETE',
           credentials: 'include',

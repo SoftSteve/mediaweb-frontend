@@ -54,7 +54,7 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     files.forEach((f) => fd.append('images', f));
 
     try {
-      const res = await fetch(`${API_URL}/api/posts/`, {
+      const res = await fetch(`https://api.memory-branch.com/api/posts/`, {
         method: 'POST',
         body: fd,
         credentials: 'include',
@@ -83,7 +83,7 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
         className="w-20 h-16 bg-gray-600 rounded-full bg-cover bg-center md:px-6 md:w-16"
         style={{
           backgroundImage: user?.profile_picture
-            ? `url(${API_URL}${user.profile_picture})`
+            ? `url(https://api.memory-branch.com/${user.profile_picture})`
             : `url('/hs-4.jpg')`,
         }}
       ></div>

@@ -89,7 +89,7 @@ export default function Signin() {
     /* optional redirect via space code */
     if (spaceCode) {
       const lookup = await fetch(
-        `${API_URL}/api/space-lookup/?code=${spaceCode}`,
+        `https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`,
         {
           credentials: 'include',
           mode: 'cors',
