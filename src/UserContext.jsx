@@ -11,7 +11,7 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     if (document.cookie.includes('sessionid=')) {
-      fetch(`${API_URL}/api/auth/session/`, {
+      fetch(`https://api.memory-branch.com/api/auth/session/`, {
         method: 'GET',
         credentials: 'include',
         mode: 'cors',
