@@ -14,25 +14,49 @@ export default function NavBar() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
 
+  /* --------------------------------------------------
+   *  CSRF helpers
+   * --------------------------------------------------*/
+  const getCsrfTokenFromCookie = () => {
+    const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : null;
+  };
+
+  const ensureCsrfCookie = async () => {
+    let token = getCsrfTokenFromCookie();
+    if (!token) {
+      try {
+        await fetch('https://api.memory-branch.com/api/csrf/', {
+          credentials: 'include',
+        });
+        token = getCsrfTokenFromCookie();
+      } catch (err) {
+        console.error('[DEBUG] Failed to obtain CSRF cookie', err);
+      }
+    }
+    return token;
+  };
+
+  /* --------------------------------------------------
+   *  Logout
+   * --------------------------------------------------*/
   async function handleLogout() {
     console.log('[DEBUG] Attempting logout...');
 
-    function getCsrfTokenFromCookie() {
-      const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
-      return match ? decodeURIComponent(match[1]) : null;
-    }
-
-    const csrfToken = getCsrfTokenFromCookie();
+    const csrfToken = await ensureCsrfCookie();
     console.log('[DEBUG] Token being sent:', csrfToken);
+
+    if (!csrfToken) {
+      console.error('[DEBUG] No CSRF token available. Abort logout.');
+      return;
+    }
 
     try {
       const res = await fetch('https://api.memory-branch.com/api/auth/logout/', {
         method: 'POST',
         credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
-          'X-Requested-With': 'XMLHttpRequest',
         },
       });
 
@@ -52,8 +76,9 @@ export default function NavBar() {
     }
   }
 
-  
-
+  /* --------------------------------------------------
+   *  Close mobile menu on outside click
+   * --------------------------------------------------*/
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
