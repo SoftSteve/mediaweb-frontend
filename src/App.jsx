@@ -12,6 +12,7 @@ import { useUser } from './UserContext';
 import { AnimatePresence } from "framer-motion";
 import PageTransition from './components/PageTransition';
 import ScrollToTop from './components/ScrollToTop';
+import { useEffect } from 'react';
 
 
 function AppInner() {
