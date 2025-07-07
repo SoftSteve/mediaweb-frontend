@@ -17,6 +17,14 @@ import ScrollToTop from './components/ScrollToTop';
 function AppInner() {
   const location = useLocation(); 
 
+  useEffect(() => {
+    fetch('https://api.memory-branch.com/api/csrf/', {
+      credentials: 'include',
+    }).catch(() => {
+      console.warn('Could not get CSRF cookie');
+    });
+  }, []);
+
   return (
     <>
       <NavBar />
