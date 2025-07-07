@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import { useUser } from '../../UserContext';
+import { API_URL } from '../../config';
 
 const USE_CLIENT_COMPRESSION = false;
 const MAX_IMAGES = 8;
@@ -53,7 +54,7 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     files.forEach((f) => fd.append('images', f));
 
     try {
-      const res = await fetch('https://softsteve.pythonanywhere.com/api/posts/', {
+      const res = await fetch(`${API_URL}/api/posts/`, {
         method: 'POST',
         body: fd,
         credentials: 'include',
@@ -82,7 +83,7 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
         className="w-20 h-16 bg-gray-600 rounded-full bg-cover bg-center md:px-6 md:w-16"
         style={{
           backgroundImage: user?.profile_picture
-            ? `url(https://softsteve.pythonanywhere.com${user.profile_picture})`
+            ? `url(${API_URL}${user.profile_picture})`
             : `url('/hs-4.jpg')`,
         }}
       ></div>
