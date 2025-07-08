@@ -11,16 +11,15 @@ export default function SpacesPreview() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get(`https://memory-branch.com/api/eventspace/`, {
-            withCredentials: true
-        })
-            .then(response => {
-                setSpace(response.data);
+        axios
+            .get('https://memory-branch.com/api/eventspace/', { withCredentials: true })
+            .then(res => {
+            const items =
+                Array.isArray(res.data) ? res.data : res.data.results ?? [];
+            setSpace(items);
             })
-            .catch(error => {
-                setError(error);
-            });
-    }, []);
+            .catch(setError);
+        }, []);
 
     return (
         <div className="flex flex-col gap-4">
@@ -32,9 +31,15 @@ export default function SpacesPreview() {
 
             <div className="w-full overflow-x-auto px-6">
                 <div className="flex gap-4 w-max">
-                    {eventSpace.map((space, index) => (
-                        <SpaceCard key={index} image={space.cover_image} title={space.name} onClick={() => navigate(`/space/${space.id}`)}/>
-                    ))}
+                    {Array.isArray(eventSpace) &&
+                        eventSpace.map(space => (
+                            <SpaceCard
+                            key={space.id}
+                            image={space.cover_image}
+                            title={space.name}
+                            onClick={() => navigate(`/space/${space.id}`)}
+                            />
+                        ))}
                 </div>
             </div>
         </div>
