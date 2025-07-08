@@ -45,15 +45,12 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     fd.append('event_space', eventSpaceId);
     files.forEach((f) => fd.append('images', f));
 
-    const csrf = getCsrfTokenFromCookie();
-    const headers = csrf ? { 'X_CSRFToken': csrf} : {};
-
     try {
       const res = await fetch(`https://api.memory-branch.com/api/posts/`, {
         method: 'POST',
         body: fd,
         credentials: 'include',
-        headers,
+        headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },
       });
 
       const newPost = await res.json().catch(() => null);
