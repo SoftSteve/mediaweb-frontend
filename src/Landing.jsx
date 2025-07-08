@@ -30,7 +30,7 @@ export default function Landing() {
   const lookupSpace = async (code) => {
     try {
       const response = await fetch(
-        `https://softsteve.pythonanywhere.com/api/space-lookup/?code=${code}`,
+        `https://api.memory-branch.com/api/space-lookup/?code=${code}`,
         {
           credentials: 'include',
           headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },

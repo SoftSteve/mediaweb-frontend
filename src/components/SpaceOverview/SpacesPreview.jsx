@@ -11,7 +11,7 @@ export default function SpacesPreview() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get(`${API_URL}/api/eventspace/`, {
+        axios.get(`https://memory-branch.com/api/eventspace/`, {
             withCredentials: true
         })
             .then(response => {

@@ -27,7 +27,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
             const fetchComments = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch(`${API_URL}/api/posts/${postId}/`, {
+                    const response = await fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
                         credentials: 'include'
                     });
                     const data = await response.json();

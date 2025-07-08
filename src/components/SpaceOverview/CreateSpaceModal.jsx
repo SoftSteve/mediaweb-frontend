@@ -62,7 +62,7 @@ export default function CreateModal({ handleSpaceCreated, isOpen, onClose }) {
   let response;
 
   try {
-    response = await fetch(`${API_URL}/api/eventspace/`, {
+    response = await fetch(`https://api.memory-branch.com/api/eventspace/`, {
       method: 'POST',
       body: formData,
       credentials: 'include',

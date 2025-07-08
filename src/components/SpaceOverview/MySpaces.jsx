@@ -18,7 +18,7 @@ export default function MySpaces() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/eventspace/`, { withCredentials: true })
+      .get(`https://api.memory-branch.com/api/eventspace/`, { withCredentials: true })
       .then(res => setSpaces(res.data))
       .catch(err => setError(err));
   }, []);

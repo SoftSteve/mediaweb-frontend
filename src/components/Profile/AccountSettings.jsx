@@ -42,7 +42,7 @@ export default function AccountSettings() {
     }
 
     try {
-        const res = await fetch(`${API_URL}/api/auth/update-account/`, {
+        const res = await fetch(`https://api.memory-branch.com/api/auth/update-account/`, {
         method: 'PATCH',
         body: data,
         credentials: 'include',

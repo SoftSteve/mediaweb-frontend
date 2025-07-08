@@ -19,7 +19,7 @@ export default function SearchSpaceModal({isOpen, onClose}) {
     const lookupSpace = async (code) => {
         try {
         const response = await fetch(
-            `${API_URL}/api/space-lookup/?code=${code}`,
+            `https://api.memory-branch.com/api/space-lookup/?code=${code}`,
             {
             credentials: 'include',
             headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },
