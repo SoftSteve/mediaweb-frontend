@@ -16,7 +16,6 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     const match = document.cookie.match(/csrftoken=([^;]+)/);
     return match ? match[1] : null;
   }
-  const csrftoken = getCsrfTokenFromCookie('csrftoken');
 
   /* --------------------------------------------------
    *  File handling (no client‑side compression)
@@ -46,12 +45,15 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     fd.append('event_space', eventSpaceId);
     files.forEach((f) => fd.append('images', f));
 
+    const csrf = getCsrfTokenFromCookie();
+    const headers = csrf ? { 'X_CSRFToken': csrf} : {};
+
     try {
       const res = await fetch(`https://api.memory-branch.com/api/posts/`, {
         method: 'POST',
         body: fd,
         credentials: 'include',
-        headers: { 'X-CSRFToken': csrftoken },
+        headers,
       });
 
       const newPost = await res.json().catch(() => null);
