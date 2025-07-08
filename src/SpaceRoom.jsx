@@ -16,8 +16,10 @@ export default function SpaceRoom() {
   const loadingRef = useRef(false);
 
   /* ─────────────── helpers ─────────────── */
-  const getCsrf = () =>
-    document.cookie.match(/csrftoken=([^;]+)/)?.[1] ?? '';
+  function getCsrfTokenFromCookie() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : null;
+  }
 
   /* --- fetch event-space detail once --- */
   useEffect(() => {
@@ -82,7 +84,7 @@ export default function SpaceRoom() {
         {
           method: 'DELETE',
           credentials: 'include',
-          headers: { 'X-CSRFToken': getCsrf() },
+          headers: { 'X-CSRFToken': getCsrfTokenFromCookie() },
         }
       );
       if (!res.ok) throw new Error('Failed to delete post');

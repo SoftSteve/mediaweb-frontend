@@ -12,9 +12,11 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
 
-  const getCookie = (name) =>
-    document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))?.[2];
-  const csrftoken = getCookie('csrftoken');
+  function getCsrfTokenFromCookie() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : null;
+  }
+  const csrftoken = getCsrfTokenFromCookie('csrftoken');
 
   /* --------------------------------------------------
    *  File handling (no client‑side compression)
