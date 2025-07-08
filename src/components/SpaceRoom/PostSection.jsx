@@ -17,9 +17,6 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     return match ? match[1] : null;
   }
 
-  /* --------------------------------------------------
-   *  File handling (no client‑side compression)
-   * --------------------------------------------------*/
   const handleFileChange = (e) => {
     let selected = Array.from(e.target.files);
 
@@ -32,9 +29,6 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
     if (fileRef.current) fileRef.current.value = null;
   };
 
-  /* --------------------------------------------------
-   *  Submit
-   * --------------------------------------------------*/
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!caption && files.length === 0) return;
