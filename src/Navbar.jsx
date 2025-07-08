@@ -12,13 +12,11 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
-  const { user, setUser, loading } = useUser();   // `loading` comes from the revised context
+  const { user, setUser, loading } = useUser();  
 
-  /* --------------------  helpers  -------------------- */
   const getCsrfToken = () =>
     document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '';
 
-  /* --------------------  logout  --------------------- */
   const handleLogout = async () => {
     try {
       const csrf = getCsrfToken();
@@ -56,8 +54,10 @@ export default function NavBar() {
 
   return (
     <nav className="h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3]">
-      <Link to="/" className="text-2xl font-bold">
-        Website
+      <Link to="/" className="w-12 h-12 rounded-full bg-cover bg-center bg-gray-600"
+        style={{
+          backgroundImage: `url('/logocirc.png')`
+        }}>
       </Link>
 
       {/* ---------- desktop menu ---------- */}
