@@ -17,10 +17,10 @@ export default function NavBar() {
   /* --------------------------------------------------
    *  CSRF helpers
    * --------------------------------------------------*/
-  const getCsrfTokenFromCookie = () => {
-    const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
-    return match ? decodeURIComponent(match[1]) : null;
-  };
+  function getCsrfTokenFromCookie() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : null;
+  }
 
   const ensureCsrfCookie = async () => {
     let token = getCsrfTokenFromCookie();
