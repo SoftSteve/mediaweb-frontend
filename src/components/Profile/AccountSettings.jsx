@@ -74,7 +74,7 @@ export default function AccountSettings() {
             src={
               formData.profile_picture instanceof File
                 ? URL.createObjectURL(formData.profile_picture)
-                : `${API_URL}${formData.profile_picture}`
+                : `https://api.memory-branch.com/${formData.profile_picture}`
             }
             alt=""
             className="w-32 h-32 rounded-full bg-primary object-cover border"
