@@ -12,7 +12,7 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      await fetch('https://api.memory-branch.com/api/get_csrf_token/', {
+      await fetch('https://api.memory-branch.com/api/csrf/', {
         credentials: 'include',
       });
 
