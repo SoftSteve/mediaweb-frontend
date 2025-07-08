@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { X } from 'lucide-react'
-import { useUser } from '../../UserContext'
+import { useUser } from './UserContext'
 
 const MAX_IMAGES = 8
 export default function AboutPage() {
