@@ -1,114 +1,90 @@
+// src/components/NavBar.jsx
 import { useState, useRef, useEffect } from 'react';
-import { BiMenuAltRight } from "react-icons/bi";
 import { Link, useNavigate } from 'react-router-dom';
-import { MdPersonOutline } from "react-icons/md";
-import { IoMdPersonAdd } from "react-icons/io";
-import { PiSignOutLight } from "react-icons/pi";
-import { motion, AnimatePresence } from 'framer-motion';
+import { BiMenuAltRight } from 'react-icons/bi';
 import { ArrowLeftToLine } from 'lucide-react';
+import { IoMdPersonAdd } from 'react-icons/io';
+import { PiSignOutLight } from 'react-icons/pi';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from './UserContext';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  const { user, setUser } = useUser();
   const navigate = useNavigate();
+  const { user, setUser, loading } = useUser();   // `loading` comes from the revised context
 
-  /* --------------------------------------------------
-   *  CSRF helpers
-   * --------------------------------------------------*/
-  function getCsrfTokenFromCookie() {
-    const match = document.cookie.match(/csrftoken=([^;]+)/);
-    return match ? match[1] : null;
-  }
+  /* --------------------  helpers  -------------------- */
+  const getCsrfToken = () =>
+    document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '';
 
-  const ensureCsrfCookie = async () => {
-    let token = getCsrfTokenFromCookie();
-    if (!token) {
-      try {
-        await fetch('https://api.memory-branch.com/api/csrf/', {
+  /* --------------------  logout  --------------------- */
+  const handleLogout = async () => {
+    try {
+      const csrf = getCsrfToken();
+      if (!csrf) throw new Error('Missing CSRF token');
+
+      const res = await fetch(
+        'https://api.memory-branch.com/api/auth/logout/',
+        {
+          method: 'POST',
           credentials: 'include',
-        });
-        token = getCsrfTokenFromCookie();
-      } catch (err) {
-        console.error('[DEBUG] Failed to obtain CSRF cookie', err);
-      }
+          headers: { 'X-CSRFToken': csrf },
+        }
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      setUser(null);
+      setMenuOpen(false);
+      navigate('/');
+    } catch (err) {
+      console.error('[NavBar] Logout failed:', err);
     }
-    return token;
   };
 
-  /* --------------------------------------------------
-   *  Logout
-   * --------------------------------------------------*/
-  async function handleLogout() {
-    console.log('[DEBUG] Attempting logout...');
-
-    const csrfToken = await ensureCsrfCookie();
-    console.log('[DEBUG] Token being sent:', csrfToken);
-
-    if (!csrfToken) {
-      console.error('[DEBUG] No CSRF token available. Abort logout.');
-      return;
-    }
-
-    try {
-      const res = await fetch('https://api.memory-branch.com/api/auth/logout/', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'X-CSRFToken': csrfToken,
-        },
-      });
-
-      console.log('[DEBUG] Logout response status:', res.status);
-      const data = await res.json().catch(() => ({}));
-      console.log('[DEBUG] Logout response data:', data);
-
-      if (res.ok) {
-        setUser(null);
-        setMenuOpen(false);
-        navigate('/');
-      } else {
-        console.error('[DEBUG] Logout failed:', data);
-      }
-    } catch (err) {
-      console.error('[DEBUG] Network error on logout:', err);
-    }
-  }
-
+  /* --------------  click‑outside to close ------------- */
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false);
-      }
-    };
+    const handleOutside = (e) =>
+      menuRef.current && !menuRef.current.contains(e.target) && setMenuOpen(false);
 
-    if (menuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [menuOpen]);
+  /* --------------  render ‑‑ guard while loading ------------- */
+  if (loading) return null;           // prevents sign‑in/‑out flicker
 
   return (
-    <div className="h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3]">
-      <Link to='/' className="text-2xl font-bold">Website</Link>
+    <nav className="h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3]">
+      <Link to="/" className="text-2xl font-bold">
+        Website
+      </Link>
 
-      {/* Desktop Menu */}
+      {/* ---------- desktop menu ---------- */}
       <ul className="hidden md:flex px-6">
-        <Link to='/' onClick={() => setMenuOpen(false)} className="md:pr-12 text-lg font-medium">Home</Link>
-        <Link to='/spaces' onClick={() => setMenuOpen(false)} className="md:pr-12 text-lg font-medium">Spaces</Link>
+        <li className="md:pr-12 text-lg font-medium">
+          <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+        </li>
+        <li className="md:pr-12 text-lg font-medium">
+          <Link to="/spaces" onClick={() => setMenuOpen(false)}>Spaces</Link>
+        </li>
+
         {user ? (
-          <button onClick={handleLogout} className="md:pr-12 text-lg font-medium text-left">Sign out</button>
+          <li className="md:pr-12 text-lg font-medium">
+            <button onClick={handleLogout}>Sign out</button>
+          </li>
         ) : (
-          <Link to='/sign-in' onClick={() => setMenuOpen(false)} className="md:pr-12 text-lg font-medium">Sign in</Link>
+          <li className="md:pr-12 text-lg font-medium">
+            <Link to="/sign-in" onClick={() => setMenuOpen(false)}>Sign in</Link>
+          </li>
         )}
-        <Link to='/about' onClick={() => setMenuOpen(false)} className="md:pr-12 text-lg font-medium">About</Link>
+
+        <li className="md:pr-12 text-lg font-medium">
+          <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+        </li>
       </ul>
 
-      {/* Hamburger Icon */}
+      {/* ---------- hamburger icon ---------- */}
       <button
         className="md:hidden"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -117,54 +93,70 @@ export default function NavBar() {
         {menuOpen ? <ArrowLeftToLine size={28} /> : <BiMenuAltRight size={32} />}
       </button>
 
-      {/* Mobile Menu */}
+      {/* ---------- mobile drawer ---------- */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div ref={menuRef} className="h-screen flex flex-col fixed top-0 left-0 w-4/5 shadow-xl md:hidden z-40" initial={{ x: -400 }} animate={{ x: 0 }} exit={{ x: -400 }} transition={{ duration: 0.3, type: 'spring', damping: 40, stiffness: 500 }}>
-            <div className='flex flex-row bg-primary h-24 justify-between items-center p-4 pt-10'>
-              <div className='flex flex-row gap-2 items-center'>
-                <div className='w-12 h-12 rounded-full bg-cover bg-center bg-gray-600'
+          <motion.div
+            ref={menuRef}
+            className="h-screen flex flex-col fixed top-0 left-0 w-4/5 shadow-xl md:hidden z-40"
+            initial={{ x: -400 }}
+            animate={{ x: 0 }}
+            exit={{ x: -400 }}
+            transition={{ duration: 0.3, type: 'spring', damping: 40, stiffness: 500 }}
+          >
+            {/* drawer header */}
+            <div className="flex items-center justify-between bg-primary h-24 p-4 pt-10">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-12 h-12 rounded-full bg-cover bg-center bg-gray-600"
                   style={{
                     backgroundImage: user?.profile_picture
                       ? `url(https://api.memory-branch.com/${user.profile_picture})`
                       : `url('/hs-4.jpg')`,
                   }}
-                ></div>
-                <Link to='/account-settings' onClick={() => setMenuOpen(false)} className="flex flex-row gap-6 md:pr-12 text-lg font-medium">
-                  <h1 className='text-md text-white'>
-                    {user ? `${user.username}` : 'Guest'}
-                  </h1>
+                />
+                <Link
+                  to="/account-settings"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-md text-white"
+                >
+                  {user ? user.username : 'Guest'}
                 </Link>
-                
               </div>
-              <div className='flex flex-row items-center gap-1'>
-                {user ? (
-                  <button
-                    onClick={handleLogout}
-                    className="md:pr-12 text-md text-white"
-                  >
-                    <PiSignOutLight className='text-2xl'/>
-                  </button>
-                ) : (
-                  <Link
-                    to='/sign-in'
-                    onClick={() => setMenuOpen(false)}
-                    className="md:pr-12 text-md text-white"
-                  >
-                    <IoMdPersonAdd className='text-2xl'/>
-                  </Link>
-                )}
-              </div>
+
+              {user ? (
+                <button onClick={handleLogout} className="text-white">
+                  <PiSignOutLight className="text-2xl" />
+                </button>
+              ) : (
+                <Link
+                  to="/sign-in"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-white"
+                >
+                  <IoMdPersonAdd className="text-2xl" />
+                </Link>
+              )}
             </div>
-            <ul className="h-full flex flex-col w-full border border-border bg-[#ece7e3] py-6 px-6 gap-10 shadow-xl">
-              <Link to='/' onClick={() => setMenuOpen(false)} className="flex flex-row gap-6 md:pr-12 text-lg font-medium"><h1>Home</h1></Link>
-              <Link to='/spaces' onClick={() => setMenuOpen(false)} className="flex flex-row gap-6 items-center md:pr-12 text-lg font-medium"><h1>Spaces</h1></Link>
-              <Link to='/materials' onClick={() => setMenuOpen(false)} className="flex flex-row gap-6 items-center md:pr-12 text-lg font-medium"><h1>Event Materials</h1></Link>
-              <Link to='/about' onClick={() => setMenuOpen(false)} className="flex flex-row gap-6 items-center md:pr-12 text-lg font-medium"><h1>About</h1></Link>
+
+            {/* drawer links */}
+            <ul className="flex flex-col gap-10 px-6 py-6 bg-[#ece7e3] h-full">
+              <li>
+                <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+              </li>
+              <li>
+                <Link to="/spaces" onClick={() => setMenuOpen(false)}>Spaces</Link>
+              </li>
+              <li>
+                <Link to="/materials" onClick={() => setMenuOpen(false)}>Event Materials</Link>
+              </li>
+              <li>
+                <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+              </li>
             </ul>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </nav>
   );
 }

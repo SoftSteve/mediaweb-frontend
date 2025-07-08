@@ -1,65 +1,43 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
-export function useUser() {
-  return useContext(UserContext);
-}
-
-/* ---------------------------------------------
- * Helper: read csrftoken from cookie
- * -------------------------------------------*/
-const getCsrfToken = () => {
-  const m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
-  return m ? decodeURIComponent(m[1]) : '';
-};
+export const useUser = () => useContext(UserContext);
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser]   = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getCsrf = () =>
+    (document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '');
 
   useEffect(() => {
-    // Always ensure we have a CSRF cookie first
-    const ensureCsrf = async () => {
-      if (!getCsrfToken()) {
-        try {
-          await fetch('https://api.memory-branch.com/api/get_csrf_token/', {
-            credentials: 'include',
-          });
-        } catch (err) {
-          console.warn('[UserContext] Could not obtain CSRF cookie', err);
-        }
-      }
-    };
-
-    const fetchSession = async () => {
-      if (!document.cookie.includes('sessionid=')) {
-        setUser(null);
-        return;
-      }
-
-      await ensureCsrf();
-      const csrfToken = getCsrfToken();
+    (async () => {
+      await fetch('https://api.memory-branch.com/api/get_csrf_token/', {
+        credentials: 'include',
+      });
 
       try {
-        const res = await fetch('https://api.memory-branch.com/api/auth/session/', {
-          credentials: 'include',
-          headers: csrfToken ? { 'X-CSRFToken': csrfToken } : {},
-        });
+        const res = await fetch(
+          'https://api.memory-branch.com/api/auth/session/',
+          { credentials: 'include' }
+        );
 
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        const data = await res.json();
-        console.debug('[UserContext] Rehydrated session:', data);
-        setUser(data);
-      } catch (err) {
-        console.debug('[UserContext] No valid session:', err);
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
-    };
-
-    fetchSession();
+    })();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, getCsrf }}>
       {children}
     </UserContext.Provider>
   );
