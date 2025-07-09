@@ -15,7 +15,7 @@ export default function Posts({ posts, fetchMorePosts, hasMore, onDeletePost }) 
         </p>
       }
     >
-      <div className="w-full flex flex-col mt-6 items-center">
+      <div className="w-full flex flex-col items-center">
         {posts.map((post) => (
           <Post
             key={post.id}

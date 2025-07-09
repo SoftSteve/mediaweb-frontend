@@ -79,7 +79,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
 
   return (
     <div className='flex flex-col'>
-      <div className="h-24 flex flex-row flex-nowrap items-center gap-2
+      <div className="flex flex-row flex-nowrap items-center gap-2
                       px-4 overflow-x-auto
                       md:w-1/3 md:self-center md:mr-12">
         <div
