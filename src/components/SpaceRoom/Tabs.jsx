@@ -3,7 +3,7 @@ import Home from './Home';
 import Gallery from './Gallery';
 import More from './More';
 
-export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, fetchMorePosts, hasMore, onPostCreated, onDeletePost, posts }) {
+export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode, fetchMorePosts, hasMore, onPostCreated, onDeletePost, posts }) {
   const [activeTab, setActiveTab] = useState('home');
 
   return (
@@ -31,7 +31,7 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, fetchMoreP
       </div>
 
       <div className="w-full">
-        {activeTab === 'home' && <Home onPostCreated={onPostCreated} fetchMorePosts={fetchMorePosts} hasMore={hasMore}  onDeletePost={onDeletePost} eventSpaceId={eventSpaceId} posts={posts} />}
+        {activeTab === 'home' && <Home onPostCreated={onPostCreated} fetchMorePosts={fetchMorePosts} hasMore={hasMore}  onDeletePost={onDeletePost} eventSpaceId={eventSpaceId} spaceCode={spaceCode} posts={posts} />}
         {activeTab === 'gallery' && <Gallery posts={posts} />}
         {activeTab === 'more' && <More posts={posts} eventSpace={eventSpace} />}
       </div>

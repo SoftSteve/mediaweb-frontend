@@ -1,27 +1,23 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Tabs from './components/SpaceRoom/Tabs';
-import { API_URL } from './config';
 
 const LIMIT = 5;
 
 export default function SpaceRoom() {
   const { id } = useParams();
 
-  /* ─────────────── state ─────────────── */
   const [eventSpace, setEventSpace] = useState(null);
   const [posts, setPosts]           = useState([]);
   const [offset, setOffset]         = useState(0);
   const [hasMore, setHasMore]       = useState(true);
   const loadingRef = useRef(false);
 
-  /* ─────────────── helpers ─────────────── */
   function getCsrfTokenFromCookie() {
     const match = document.cookie.match(/csrftoken=([^;]+)/);
     return match ? match[1] : null;
   }
 
-  /* --- fetch event-space detail once --- */
   useEffect(() => {
     async function fetchEventSpace() {
       try {
@@ -40,7 +36,6 @@ export default function SpaceRoom() {
     if (id) fetchEventSpace();
   }, [id]);
 
-  /* --- paginated post loader --- */
   const loadPosts = async () => {
     if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
@@ -63,7 +58,6 @@ export default function SpaceRoom() {
     }
   };
 
-  /* --- reset & initial load when id changes --- */
   useEffect(() => {
     setPosts([]);
     setOffset(0);
@@ -71,7 +65,6 @@ export default function SpaceRoom() {
     if (id) loadPosts();
   }, [id]);
 
-  /* --- post create / delete helpers --- */
   const handlePostCreated = (newPost) => {
     setPosts(prev => [newPost, ...prev]);
     setOffset(prev => prev + 1);
@@ -95,12 +88,12 @@ export default function SpaceRoom() {
     }
   };
 
-  /* ─────────────── render ─────────────── */
   return (
     <div className="w-screen min-h-screen flex flex-col pb-20 mt-20 bg-[#ece7e3]">
       <Tabs
         eventSpaceId={id}
-        eventSpace={eventSpace}          /* ⬅️ NEW prop */
+        eventSpace={eventSpace}
+        spaceCode={eventSpace?.space_code}
         posts={posts}
         onPostCreated={handlePostCreated}
         onDeletePost={handleDeletePost}

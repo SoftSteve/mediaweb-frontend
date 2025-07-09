@@ -12,6 +12,7 @@ import { AnimatePresence } from "framer-motion";
 import PageTransition from './components/PageTransition';
 import ScrollToTop from './components/ScrollToTop';
 import { useEffect } from 'react';
+import JoinRoute from './JoinRoute';
 
 
 function AppInner() {
@@ -94,6 +95,14 @@ function AppInner() {
                 <SpaceRoom />
               </PageTransition>
             }
+          />
+          <Route path="/join/:code" 
+          element={
+            <PageTransition>
+              <JoinRoute/>
+            </PageTransition>
+            
+          } 
           />
         </Routes>
       </AnimatePresence>

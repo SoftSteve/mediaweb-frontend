@@ -7,13 +7,30 @@ import { X } from 'lucide-react'
 
 const MAX_IMAGES = 8
 
-export default function PostSection({ eventSpaceId, onPostCreated }) {
+export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) {
   const [open, setOpen] = useState(false)
   const [files, setFiles] = useState([])
   const [caption, setCaption] = useState('')
   const [loading, setLoading] = useState(false)
   const fileRef = useRef()
   const { user } = useUser()
+  const shareUrl  = `${window.location.origin}/join/${spaceCode}`
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Join my Memory Branch space',
+          url: shareUrl,
+        })
+      } else {
+        await navigator.clipboard.writeText(shareUrl)
+        alert('Link copied to clipboard')
+      }
+    } catch (err) {
+      console.error('Share cancelled', err)
+    }
+  }
 
   const getCsrf = () =>
     document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || ''
@@ -62,7 +79,9 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
 
   return (
     <div className='flex flex-col'>
-      <div className="h-24 flex flex-row items-center gap-2 px-4 pt-4 border-b border-gray-500 md:w-1/3 md:self-center md:mr-12">
+      <div className="h-24 flex flex-row flex-nowrap items-center gap-2
+                px-4 pt-4 border-b border-gray-500 overflow-x-auto
+                md:w-1/3 md:self-center md:mr-12">
         <div
           className="w-12 h-12 bg-gray-600 rounded-full bg-cover bg-center shrink-0"
           style={{
@@ -71,12 +90,17 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
               : `url('/hs-4.jpg')`,
           }}
         />
-        <input
-          readOnly
-          onClick={() => setOpen(true)}
-          placeholder="Create a post.."
-          className="flex-1 cursor-pointer bg-[#ece7e3] p-4 pb-0 resize-none focus:outline-none"
-        />
+        <button
+            onClick={() => setOpen(true)}
+            className="flex-none bg-secondary shadow-xl rounded-full px-4 py-2 text-white">
+            Create Post
+        </button>
+
+        <button
+            onClick={handleShare}
+            className="flex-none bg-surface shadow-xl rounded-full px-4 py-2 text-secondary">
+            Share Space
+        </button>
       </div>
 
       {/* modal */}
