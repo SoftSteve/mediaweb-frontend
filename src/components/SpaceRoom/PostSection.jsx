@@ -4,7 +4,7 @@ import { MdAddPhotoAlternate } from 'react-icons/md'
 import { IoIosSend } from 'react-icons/io'
 import { useUser } from '../../UserContext'
 import { X } from 'lucide-react'
-import { IoAdd } from "react-icons/io5";
+
 
 const MAX_IMAGES = 8
 
@@ -93,14 +93,13 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
         />
         <button
             onClick={() => setOpen(true)}
-            className="flex-row gap-2 bg-secondary rounded-full px-4 py-2 text-white">
-              <IoAdd className='text-xl text-white'/>
-              Create Post
+            className="flex-none bg-secondary rounded-full px-4 py-2 text-white">
+            Create Post
         </button>
 
         <button
             onClick={handleShare}
-            className="flex-row gap-2 bg-surface rounded-full px-4 py-2 text-secondary">
+            className="flex-none bg-surface rounded-full px-4 py-2 text-secondary">
             Share Space
         </button>
       </div>
