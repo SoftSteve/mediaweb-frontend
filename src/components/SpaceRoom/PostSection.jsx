@@ -79,7 +79,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
 
   return (
     <div className='flex flex-col'>
-      <div className="h-20 flex flex-row flex-nowrap items-center gap-2
+      <div className="flex flex-row flex-nowrap items-center gap-2
                       px-4 overflow-x-auto
                       md:w-1/3 md:self-center md:mr-12">
         <div
@@ -92,13 +92,13 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
         />
         <button
             onClick={() => setOpen(true)}
-            className="flex-none bg-secondary shadow-xl rounded-full px-4 py-2 text-white">
+            className="flex-none bg-secondary shadow-md rounded-full px-4 py-2 text-white">
             Create Post
         </button>
 
         <button
             onClick={handleShare}
-            className="flex-none bg-surface shadow-xl rounded-full px-4 py-2 text-secondary">
+            className="flex-none bg-surface shadow-md rounded-full px-4 py-2 text-secondary">
             Share Space
         </button>
       </div>
