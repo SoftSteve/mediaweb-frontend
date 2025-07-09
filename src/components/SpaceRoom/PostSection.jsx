@@ -1,9 +1,9 @@
 import { useState, useRef, Fragment } from 'react'
-import { Dialog, Transition, TransitionChild, DialogPanel } from '@headlessui/react'
-import { motion } from 'framer-motion'
+import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { IoIosSend } from 'react-icons/io'
 import { useUser } from '../../UserContext'
+import { X } from 'lucide-react'
 
 const MAX_IMAGES = 8
 
@@ -61,22 +61,21 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
   }
 
   return (
-    <>
-      {/* inline trigger row */}
-      <div className="h-24 flex gap-4 p-4 md:w-1/3 md:self-center md:mr-12">
+    <div className='mt-20 flex flex-col'>
+      <div className="h-24 flex flex-row items-center gap-2 px-4 pt-4 border-b border-gray-500 md:w-1/3 md:self-center md:mr-12">
         <div
-          className="w-16 h-16 bg-gray-600 rounded-full bg-cover bg-center shrink-0"
+          className="w-12 h-12 bg-gray-600 rounded-full bg-cover bg-center shrink-0"
           style={{
             backgroundImage: user?.profile_picture
               ? `url(https://api.memory-branch.com/${user.profile_picture})`
               : `url('/hs-4.jpg')`,
           }}
         />
-        <textarea
+        <input
           readOnly
           onClick={() => setOpen(true)}
-          placeholder="Write something..."
-          className="flex-1 cursor-pointer rounded-md bg-[#ece7e3] border border-primary p-4 resize-none focus:outline-none"
+          placeholder="Create a post.."
+          className="flex-1 cursor-pointer bg-[#ece7e3] p-4 pb-0 resize-none focus:outline-none"
         />
       </div>
 
@@ -105,68 +104,79 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
               leaveFrom="translate-y-0"
               leaveTo="translate-y-full"
             >
-              <DialogPanel className="w-full h-[70vh] bg-[#ece7e3] rounded-t-2xl p-6 shadow-xl flex flex-col">
-                <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+              <DialogPanel className="w-full h-full bg-white p-6 shadow-xl flex flex-col">
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4 h-full">
-                  <textarea
+                {/* top bar */}
+                <div className="relative mb-4 flex items-center justify-center">
+                    {/* close */}
+                    <button
+                    type="button"
+                    onClick={reset}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 text-2xl"
+                    >
+                    <X />
+                    </button>
+
+                    <DialogTitle className="text-xl font-lg ">Create Post</DialogTitle>
+
+                    <button
+                    type="submit"
+                    form="postForm"
+                    disabled={loading}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full p-2 bg-blue-500 text-white"
+                    >
+                    {loading ? '...' : <IoIosSend className="h-5 w-5" />}
+                    </button>
+                </div>
+
+                <form id="postForm" onSubmit={handleSubmit} className="flex flex-col gap-4 h-full">
+                    <textarea
                     value={caption}
                     onChange={e => setCaption(e.target.value)}
-                    placeholder="Write something..."
+                    placeholder="Write your caption..."
                     rows={3}
-                    className="w-full rounded-md bg-white border border-primary p-3 resize-none focus:outline-none"
-                  />
+                    className="w-full rounded-md bg-white p-3 text-lg focus:outline-none"
+                    />
 
-                  {files.length > 0 && (
+                    {files.length > 0 && (
                     <div className="grid grid-cols-3 gap-2">
-                      {files.map((f, i) => (
+                        {files.map((f, i) => (
                         <img
-                          key={i}
-                          src={URL.createObjectURL(f)}
-                          alt=""
-                          className="h-24 w-full object-cover rounded-md"
+                            key={i}
+                            src={URL.createObjectURL(f)}
+                            alt=""
+                            className="h-24 w-full object-cover rounded-md"
                         />
-                      ))}
+                        ))}
                     </div>
-                  )}
+                    )}
 
-                  <div className="mt-auto flex items-center justify-between">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      type="button"
-                      onClick={() => fileRef.current?.click()}
-                      className="flex items-center gap-1 text-primary"
+                    <div className="mt-auto">
+                    <button
+                        type="button"
+                        onClick={() => fileRef.current?.click()}
+                        className="flex items-center gap-1 text-blue-500"
                     >
-                      <MdAddPhotoAlternate className="text-2xl" />
-                      {files.length > 0 && `(${files.length})`}
-                    </motion.button>
+                        <MdAddPhotoAlternate className="text-4xl" />
+                        {files.length > 0 && `(${files.length})`}
+                    </button>
+                    </div>
 
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      disabled={loading}
-                      type="submit"
-                      className="rounded-full p-3 bg-secondary text-white"
-                    >
-                      {loading ? '...' : <IoIosSend className="h-6 w-6" />}
-                    </motion.button>
-                  </div>
-
-                  <input
+                    <input
                     type="file"
                     accept="image/*"
                     multiple
                     ref={fileRef}
                     onChange={handleFileChange}
                     className="hidden"
-                  />
+                    />
                 </form>
-              </DialogPanel>
+                </DialogPanel>
             </TransitionChild>
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   )
 }
 

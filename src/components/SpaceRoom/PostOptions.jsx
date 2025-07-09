@@ -1,12 +1,10 @@
-import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, Transition, TransitionChild, DialogPanel} from '@headlessui/react';
 import { Fragment } from 'react';
 import IconButton from '../IconButton';
 import { MdOutlineFileDownload,  } from 'react-icons/md';
 import { FaRegTrashCan } from "react-icons/fa6";
-import axios from 'axios';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { IoIosCloseCircleOutline } from "react-icons/io"
 import { useUser } from '../../UserContext';
 
 

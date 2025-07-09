@@ -8,7 +8,6 @@ import SpaceRoom from './SpaceRoom';
 import CreateAccount from './SignUp';
 import Materials from './Materials';
 import AccountSettings from './components/Profile/AccountSettings';
-import { useUser } from './UserContext';
 import { AnimatePresence } from "framer-motion";
 import PageTransition from './components/PageTransition';
 import ScrollToTop from './components/ScrollToTop';
