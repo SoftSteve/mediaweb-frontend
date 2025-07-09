@@ -61,7 +61,7 @@ export default function PostSection({ eventSpaceId, onPostCreated }) {
   }
 
   return (
-    <div className='mt-20 flex flex-col'>
+    <div className='flex flex-col'>
       <div className="h-24 flex flex-row items-center gap-2 px-4 pt-4 border-b border-gray-500 md:w-1/3 md:self-center md:mr-12">
         <div
           className="w-12 h-12 bg-gray-600 rounded-full bg-cover bg-center shrink-0"
