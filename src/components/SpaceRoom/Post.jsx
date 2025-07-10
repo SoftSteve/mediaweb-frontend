@@ -1,16 +1,11 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Zoom } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import HeartButton from './HeartButton';
 import { FaRegComment, FaEllipsisH, FaHeart } from 'react-icons/fa';
-import { HiDotsHorizontal } from 'react-icons/hi';
-import { useState } from 'react';
 import PostOptions from './PostOptions';
-import { useUser } from '../../UserContext';
 import CommentSection from './Comment';
-
 
 function PostHeader({ avatar, name, time, onOptions }) {
   return (
@@ -100,6 +95,23 @@ function Post({
     setLikes((prev) => (liked ? prev - 1 : prev + 1));
   }, [liked]);
 
+  // 🔥 Fetch comment count on first render
+  useEffect(() => {
+    const fetchCommentCount = async () => {
+      try {
+        const res = await fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
+          credentials: 'include',
+        });
+        const data = await res.json();
+        setCommentCount(data.comments?.length || 0);
+      } catch (err) {
+        console.error('Failed to fetch comment count', err);
+      }
+    };
+
+    fetchCommentCount();
+  }, [postId]);
+
   return (
     <article className="flex w-full max-w-xl flex-col gap-2 lg:w-1/4">
       {/* Header */}
@@ -109,6 +121,7 @@ function Post({
         time={time}
         onOptions={() => setShowOptions(true)}
       />
+
       {/* Media */}
       <PostGallery images={image} />
 
@@ -124,7 +137,7 @@ function Post({
       {/* Caption */}
       {caption && <p className="px-4 pb-4 text-secondary/80">{caption}</p>}
 
-      {/* Lazy‑mounted overlays */}
+      {/* Lazy-mounted overlays */}
       {showOptions && (
         <PostOptions
           isOpen={showOptions}
