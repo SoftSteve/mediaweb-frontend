@@ -70,7 +70,7 @@ function PostActions({ liked, likes, onLike, onComment, commentCount }) {
       </button>
       <button
         onClick={onComment}
-        className="text-gray-400 hover:text-blue-500 focus:outline-none"
+        className="flex flex-row items-center gap-1 text-gray-400 hover:text-blue-500 focus:outline-none"
       >
         <FaRegComment className="h-5 w-5" />
         {commentCount > 0 && <p>{commentCount}</p>}
