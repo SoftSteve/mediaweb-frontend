@@ -1,3 +1,4 @@
+import PostSection from "./PostSection"
 export default function SpaceHeader() {
     return(
         <div className="w-full h-1/3 bg-gradient-to-b from-[#ece7e3] to-white flex flex-col">
@@ -30,6 +31,7 @@ export default function SpaceHeader() {
                         members
                     </h1>
                 </div>
+                <PostSection/>
             </div>
         </div>
     )
