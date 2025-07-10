@@ -31,7 +31,6 @@ export default function SpaceHeader() {
                         members
                     </h1>
                 </div>
-                <PostSection/>
             </div>
         </div>
     )
