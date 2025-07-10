@@ -13,6 +13,8 @@ export default function NavBar() {
   const menuRef = useRef(null);
   const navigate = useNavigate();
   const { user, setUser, loading } = useUser();  
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const getCsrfToken = () =>
     document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '';
@@ -40,7 +42,6 @@ export default function NavBar() {
     }
   };
 
-  /* --------------  click‑outside to close ------------- */
   useEffect(() => {
     const handleOutside = (e) =>
       menuRef.current && !menuRef.current.contains(e.target) && setMenuOpen(false);
@@ -49,11 +50,38 @@ export default function NavBar() {
     return () => document.removeEventListener('mousedown', handleOutside);
   }, []);
 
-  /* --------------  render ‑‑ guard while loading ------------- */
-            // prevents sign‑in/‑out flicker
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+  }, [lastScrollY]);
 
   return (
-    <nav className="h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3]">
+    <nav className={`h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3] transition-transform duration-300 ${
+        showNavbar ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
       <div className='flex flex-row items-center gap-1'>
         <Link to="/" className="w-10 h-10 rounded-full bg-cover bg-center bg-gray-600"
         style={{
@@ -65,8 +93,6 @@ export default function NavBar() {
       </h1>
       </div>
       
-
-      {/* ---------- desktop menu ---------- */}
       <ul className="hidden md:flex px-6">
         <li className="md:pr-12 text-lg font-medium">
           <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
@@ -90,7 +116,6 @@ export default function NavBar() {
         </li>
       </ul>
 
-      {/* ---------- hamburger icon ---------- */}
       <button
         className="md:hidden"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -99,7 +124,6 @@ export default function NavBar() {
         {menuOpen ? <ArrowLeftToLine size={28} /> : <BiMenuAltRight size={32} />}
       </button>
 
-      {/* ---------- mobile drawer ---------- */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div

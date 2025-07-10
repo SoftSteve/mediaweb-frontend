@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Tabs from './components/SpaceRoom/Tabs';
+import SpaceHeader from './components/SpaceRoom/SpaceHeader';
 
 const LIMIT = 5;
 
@@ -90,6 +91,7 @@ export default function SpaceRoom() {
 
   return (
     <div className="w-screen min-h-screen flex flex-col pb-20 mt-20 bg-[#ece7e3]">
+      <SpaceHeader/>
       <Tabs
         eventSpaceId={id}
         eventSpace={eventSpace}
