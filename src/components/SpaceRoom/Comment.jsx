@@ -32,6 +32,9 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                     });
                     const data = await response.json();
                     setComments(data.comments || []);
+
+                    onCommentAdded?.(data.comments?.length || 0);
+                    
                 } catch (err) {
                     console.error("Failed to load comments", err);
                 } finally {

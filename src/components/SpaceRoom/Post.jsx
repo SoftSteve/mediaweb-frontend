@@ -58,7 +58,7 @@ function PostGallery({ images }) {
   );
 }
 
-function PostActions({ liked, likes, onLike, onComment }) {
+function PostActions({ liked, likes, onLike, onComment, commentCount }) {
   return (
     <div className="flex items-center gap-4 px-6 py-1">
       <button
@@ -73,6 +73,7 @@ function PostActions({ liked, likes, onLike, onComment }) {
         className="text-gray-400 hover:text-blue-500 focus:outline-none"
       >
         <FaRegComment className="h-5 w-5" />
+        {commentCount > 0 && <p>{commentCount}</p>}
       </button>
     </div>
   );
@@ -92,6 +93,7 @@ function Post({
   const [liked, setLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
 
   const toggleLike = useCallback(() => {
     setLiked((prev) => !prev);
@@ -116,6 +118,7 @@ function Post({
         likes={likes}
         onLike={toggleLike}
         onComment={() => setShowComments(true)}
+        commentCount={commentCount}
       />
 
       {/* Caption */}
@@ -136,6 +139,7 @@ function Post({
           isOpen={showComments}
           onClose={() => setShowComments(false)}
           postId={postId}
+          onCommentAdded={(length) => setCommentCount(length)}
         />
       )}
     </article>

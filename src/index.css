@@ -27,7 +27,7 @@ code {
 
 /* Active bullet */
 .swiper-pagination-bullet-active {
-  background-color: #3b82f6 !important;  /* Tailwind’s blue-500 */
+  background-color: #3b82f6 !important;  
   transform: scale(1);
 }
 
