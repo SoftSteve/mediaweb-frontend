@@ -1,6 +1,6 @@
 export default function SpaceHeader() {
     return(
-        <div className="w-full h-1/3 bg-gradient-to-b from-[#ece7e3] to-white mt-20 flex flex-col">
+        <div className="w-full h-1/3 bg-gradient-to-b from-[#ece7e3] to-white flex flex-col">
             <div className="flex p-4 justify-center">
                 <div className="h-24 w-24 rounded-full bg-cover bg-center inset-0 resize-0"
                     style={{
