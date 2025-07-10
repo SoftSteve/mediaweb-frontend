@@ -83,14 +83,6 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
       <div className="flex flex-row flex-nowrap justify-center items-center gap-2
                       px-4 overflow-x-auto
                       md:w-1/3 md:self-center md:mr-12">
-        <div
-          className="w-12 h-12 bg-gray-600 rounded-full bg-cover bg-center shrink-0"
-          style={{
-            backgroundImage: user?.profile_picture
-              ? `url(https://api.memory-branch.com/${user.profile_picture})`
-              : `url('/hs-4.jpg')`,
-          }}
-        />
         <button
             onClick={() => setOpen(true)}
             className="flex-none bg-secondary rounded-full px-4 py-2 text-white">
