@@ -4,7 +4,7 @@ export default function SpaceHeader() {
             <div className="flex p-4 justify-center">
                 <div className="h-24 w-24 rounded-full bg-cover bg-center inset-0 resize-0"
                     style={{
-                        backgroundImage: `url('wedding.jpg')`
+                        backgroundImage: `url('/wedding.jpg')`
                     }}
                 ></div>
             </div>
