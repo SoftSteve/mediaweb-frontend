@@ -5,7 +5,7 @@ export default function Home({ eventSpaceId, fetchMorePosts, hasMore, onPostCrea
 
 
   return (
-    <div className="flex flex-col mt-2 bg-[#ece7e3] gap-4">
+    <div className="flex flex-col mt-2 bg-white gap-4">
       <PostSection onPostCreated={onPostCreated} eventSpaceId={eventSpaceId} spaceCode={spaceCode} />
       <Posts posts={posts} onDeletePost={onDeletePost} fetchMorePosts={fetchMorePosts} hasMore={hasMore}/>
     </div>

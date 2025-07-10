@@ -8,7 +8,7 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
 
   return (
     <div>
-      <div className="h-16 w-full flex flex-row items-center top-0 bg-[#ece7e3] z-10">
+      <div className="h-16 w-full flex flex-row items-center top-0 bg-white z-10">
         <div className="w-full flex border-t border-border justify-center">
           {['home', 'gallery', 'more'].map((tab) => (
             <button
