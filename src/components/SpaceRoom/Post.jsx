@@ -68,7 +68,7 @@ function PostGallery({ images }) {
               loading="lazy"
               src={img.image}
               alt={`post-media-${i}`}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
           </div>
         </SwiperSlide>
