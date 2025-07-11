@@ -10,7 +10,7 @@ import { useUser } from '../../UserContext';
 
 export default function PostOptions({isOpen, onClose, postId, onDeletePost, images = []}) {
     const { user }  = useUser();
-    const isAuthor = user?.id === postId.authur
+    const isAuthor = user?.id === postId.author
 
     const handleClick = () => {
         if (window.confirm('Are you sure you want to delete this post?')) {

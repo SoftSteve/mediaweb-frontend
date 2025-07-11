@@ -63,7 +63,6 @@ function PostGallery({ images }) {
     >
       {images.map((img, i) => (
         <SwiperSlide key={img.id ?? i} className="relative w-full h-full">
-          {/* Clean blurred background for all */}
           <img
             src={img.image}
             alt=""
@@ -71,7 +70,6 @@ function PostGallery({ images }) {
             className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-60 z-0"
           />
 
-          {/* Main image */}
           <div className="swiper-zoom-container relative z-10 h-full w-full">
             <img
               loading="lazy"
@@ -128,7 +126,6 @@ function Post({
     setLikes((prev) => (liked ? prev - 1 : prev + 1));
   }, [liked]);
 
-  // 🔥 Fetch comment count on first render
   useEffect(() => {
     const fetchCommentCount = async () => {
       try {
@@ -147,7 +144,7 @@ function Post({
 
   return (
     <article className="flex w-full max-w-xl flex-col gap-2 lg:w-1/4">
-      {/* Header */}
+
       <PostHeader
         avatar={profilePicture}
         name={name}
@@ -155,10 +152,8 @@ function Post({
         onOptions={() => setShowOptions(true)}
       />
 
-      {/* Media */}
       <PostGallery images={image} />
 
-      {/* Actions */}
       <PostActions
         liked={liked}
         likes={likes}
@@ -167,10 +162,8 @@ function Post({
         commentCount={commentCount}
       />
 
-      {/* Caption */}
       {caption && <p className="px-4 pb-4 text-secondary/80">{caption}</p>}
 
-      {/* Lazy-mounted overlays */}
       {showOptions && (
         <PostOptions
           isOpen={showOptions}
