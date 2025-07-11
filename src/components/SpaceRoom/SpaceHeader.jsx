@@ -8,8 +8,8 @@ export default function SpaceHeader() {
     {/* Foreground content */}
     <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-secondary">
       {/* Avatar */}
-      <div className="h-24 w-24 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
-        style={{ backgroundImage: `url('/wedding.jpg')` }}
+      <div className="h-40 w-40 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
+        style={{ backgroundImage: `url('/Dog.jpg')` }}
       />
 
       {/* Title */}
