@@ -10,7 +10,7 @@ export default function SpaceHeader() {
       {/* Avatar */}
       <div className="h-40 w-40 rounded-full overflow-hidden shadow-lg border-2 border-white">
         <img
-          src="/Dog.jpg"
+          src="/wedding.jpg"
           alt="Profile"
           className="h-full w-full object-contain"
         />
