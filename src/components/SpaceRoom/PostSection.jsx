@@ -4,6 +4,8 @@ import { MdAddPhotoAlternate } from 'react-icons/md'
 import { IoIosSend } from 'react-icons/io'
 import { useUser } from '../../UserContext'
 import { X } from 'lucide-react'
+import { IoShareOutline } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
 
 
 const MAX_IMAGES = 8
@@ -80,19 +82,22 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
 
   return (
     <div className='flex flex-col'>
-      <div className="flex flex-row flex-nowrap justify-center items-center gap-2
-                      px-4 overflow-x-auto
-                      md:w-1/3 md:self-center md:mr-12">
+      <div className="backdrop-blur-md bg-white/70 dark:bg-black/30 p-3 px-5 flex flex-row flex-nowrap justify-center items-center gap-3
+                      md:w-1/3 md:self-center md:mr-12 transition-all duration-200">
         <button
-            onClick={() => setOpen(true)}
-            className="flex-none bg-secondary rounded-full px-4 py-2 text-white">
-            Create Post
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-2 bg-primary text-white font-medium rounded-full px-4 py-2 hover:shadow-md hover:bg-primary/90 transition-all duration-150"
+        >
+          <IoAdd className="text-2xl"/>
+          Create Post
         </button>
 
         <button
-            onClick={handleShare}
-            className="flex-none bg-surface rounded-full px-4 py-2 text-secondary">
-            Share Space
+          onClick={handleShare}
+          className="flex items-center gap-2 bg-surface text-secondary font-medium rounded-full px-4 py-2 hover:shadow-md hover:bg-surface/80 transition-all duration-150"
+        >
+          <IoShareOutline className="text-xl"/>
+          Share Space
         </button>
       </div>
 

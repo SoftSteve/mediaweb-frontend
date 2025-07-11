@@ -2,7 +2,7 @@
 export default function SpaceHeader() {
     return (
   <div
-    className="w-full h-80 relative bg-gradient-to-b from-[#ece7e3] to-white"
+    className="w-full h-80 relative bg-gradient-to-b rounded-b-xl shadow-md from-[#ece7e3] to-white"
   >
 
     {/* Foreground content */}
