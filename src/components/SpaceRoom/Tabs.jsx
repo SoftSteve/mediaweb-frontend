@@ -10,14 +10,12 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
 
   useEffect(() => {
     if (hasMounted.current) {
-      if (tabRef.current) {
-        tabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'});
+        tabRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start'});
       } else {
         hasMounted.current = true;
       }
-    }
   }, [activeTab]);
-  
+
   return (
     <div>
       <div
