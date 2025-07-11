@@ -6,12 +6,18 @@ import More from './More';
 export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode, fetchMorePosts, hasMore, onPostCreated, onDeletePost, posts }) {
   const [activeTab, setActiveTab] = useState('timeline');
   const tabRef = useRef(null);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    if (tabRef.current) {
-      tabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    if (hasMounted.current) {
+      if (tabRef.current) {
+        tabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'});
+      } else {
+        hasMounted.current = true;
+      }
     }
   }, [activeTab]);
+  
   return (
     <div>
       <div
