@@ -61,7 +61,7 @@ function PostGallery({ images }) {
       modules={[Pagination, Zoom]}
       zoom
       slidesPerView={1}
-      className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-300 md:border-0`}
+      className={`${aspectClass} w-full overflow-hidden border border-gray-500 md:rounded-md md:border border-gray-300 md:border-0`}
       pagination={{ clickable: true, type: 'bullets', dynamicBullets: true }}
     >
       {images.map((img, i) => (
