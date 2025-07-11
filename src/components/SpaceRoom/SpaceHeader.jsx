@@ -6,7 +6,7 @@ export default function SpaceHeader() {
   >
 
     {/* Foreground content */}
-    <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-white">
+    <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-secondary">
       {/* Avatar */}
       <div className="h-24 w-24 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
         style={{ backgroundImage: `url('/wedding.jpg')` }}
@@ -19,11 +19,11 @@ export default function SpaceHeader() {
       <div className="grid grid-cols-2 gap-10 pt-4 text-center">
         <div>
           <h1 className="text-xl font-bold">32</h1>
-          <p className="text-sm text-white/80">Posts</p>
+          <p className="text-sm text-gray-500">Posts</p>
         </div>
         <div>
           <h1 className="text-xl font-bold">15</h1>
-          <p className="text-sm text-white/80">Members</p>
+          <p className="text-sm text-gray-500">Members</p>
         </div>
       </div>
     </div>
