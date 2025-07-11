@@ -4,8 +4,6 @@ export default function SpaceHeader() {
   <div
     className="w-full h-80 relative bg-gradient-to-b from-[#ece7e3] to-white"
   >
-    {/* Overlay blur & tint */}
-    <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-0" />
 
     {/* Foreground content */}
     <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-white">
