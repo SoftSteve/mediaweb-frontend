@@ -10,10 +10,16 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
 
   useEffect(() => {
     if (hasMounted.current) {
-        tabRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start'});
-      } else {
-        hasMounted.current = true;
+      if (tabRef.current) {
+        const tabTop = tabRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: tabTop,
+          behavior: 'smooth',
+        });
       }
+    } else {
+      hasMounted.current = true;
+    }
   }, [activeTab]);
 
   return (
