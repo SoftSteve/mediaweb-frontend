@@ -8,11 +8,14 @@ import PostOptions from './PostOptions';
 import CommentSection from './Comment';
 
 
+function getAspectClass(width, height) {
+  if (!width || !height) return 'aspect-[4/5]';
 
-function clampAspectRatio(ratio) {
-  const MIN = 0.8;  // 4:5
-  const MAX = 1.91; // 1.91:1
-  return Math.min(Math.max(ratio, MIN), MAX);
+  const ratio = width / height;
+
+  if (ratio > 1.91) return 'aspect-[1.91/1]';
+  if (ratio < 0.8) return 'aspect-[4/5]';
+  return 'aspect-[1/1]';
 }
 
 function PostHeader({ avatar, name, time, onOptions }) {
@@ -36,72 +39,40 @@ function PostHeader({ avatar, name, time, onOptions }) {
 }
 
 function PostGallery({ images }) {
-  const [imageRatios, setImageRatios] = useState([]);
+  const [aspectClass, setAspectClass] = useState('aspect-[4/5]');
 
   useEffect(() => {
-    const fetchRatios = async () => {
-      const promises = images.map((img) => {
-        return new Promise((resolve) => {
-          const i = new Image();
-          i.onload = () => resolve(i.naturalWidth / i.naturalHeight);
-          i.onerror = () => resolve(1); // fallback aspect
-          i.src = img.image;
-        });
-      });
+    if (!images.length) return;
 
-      const ratios = await Promise.all(promises);
-      setImageRatios(ratios.map(clampAspectRatio));
+    const img = new Image();
+    img.src = images[0].image;
+    img.onload = () => {
+      setAspectClass(getAspectClass(img.width, img.height));
     };
-
-    if (images.length) fetchRatios();
   }, [images]);
 
-  if (!images.length || imageRatios.length !== images.length) return null;
+  if (!images.length) return null;
 
   return (
     <Swiper
       modules={[Pagination, Zoom]}
       zoom
       slidesPerView={1}
-      pagination={{ clickable: true, dynamicBullets: true }}
-      className="w-full max-w-xl overflow-hidden rounded-md border border-gray-200"
+      className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-400 md:border-0`}
+      pagination={{ clickable: false, type: 'bullets', dynamicBullets: true }}
     >
-      {images.map((img, i) => {
-  const aspect = imageRatios[i]; // width / height
-  const heightPercentage = 100 / aspect; // For padding-top trick
-  const isWide = aspect >= 1.8; // close to max
-
-  return (
-    <SwiperSlide key={img.id ?? i} className="relative w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md"
-        style={{ paddingTop: `${heightPercentage}%` }}
-      >
-        {/* Blurred Background (Visible even on wide images) */}
-        <img
-          src={img.image}
-          alt=""
-          aria-hidden="true"
-          className={`absolute inset-0 w-full h-full object-cover filter blur-lg scale-110 z-0 ${
-            isWide ? 'opacity-80' : 'opacity-60'
-          }`}
-        />
-
-        {/* Optional: dark overlay for contrast */}
-        {isWide && (
-          <div className="absolute inset-0 bg-black/10 z-10" />
-        )}
-
-        {/* Main Image */}
-        <img
-          src={img.image}
-          alt={`post-media-${i}`}
-          className="absolute inset-0 z-20 w-full h-full object-contain"
-        />
-      </div>
-    </SwiperSlide>
-  );
-})}
+      {images.map((img, i) => (
+        <SwiperSlide key={img.id ?? i}>
+          <div className="swiper-zoom-container h-full w-full">
+            <img
+              loading="lazy"
+              src={img.image}
+              alt={`post-media-${i}`}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
