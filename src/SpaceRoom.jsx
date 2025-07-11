@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Tabs from './components/SpaceRoom/Tabs';
 import SpaceHeader from './components/SpaceRoom/SpaceHeader';
 
-const LIMIT = 20;
+const LIMIT = 2;
 
 export default function SpaceRoom() {
   const { id } = useParams();
