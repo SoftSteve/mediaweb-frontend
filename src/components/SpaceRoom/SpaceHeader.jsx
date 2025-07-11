@@ -1,12 +1,14 @@
 
 export default function SpaceHeader({eventSpace}) {
+    if (!eventSpace) return null;
+
     const {
-      cover_image,
-      name,
-      posts,
-      members
+      cover_image = '',
+      name = '',
+      posts =  [],
+      members = []
     } = eventSpace;
-    if (!eventSpace) {
+
     return (
   <div
     className="w-full h-80 relative bg-gradient-to-b rounded-b-xl shadow-md from-[#ece7e3] to-white"
@@ -37,5 +39,4 @@ export default function SpaceHeader({eventSpace}) {
   </div>
 );
 
-}
 }
