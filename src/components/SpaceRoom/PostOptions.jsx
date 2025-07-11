@@ -76,7 +76,6 @@ export default function PostOptions({isOpen, onClose, postId, onDeletePost, imag
                         <IconButton
                             icon={<FaRegTrashCan className='text-xl text-red-500'/>}
                             text='Delete Post'
-                            disabled={!isAuthor}
                             onClick={handleClick}
                         />
                         </div>
