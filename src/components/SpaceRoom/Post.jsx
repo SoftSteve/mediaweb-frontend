@@ -7,6 +7,17 @@ import { FaRegComment, FaEllipsisH, FaHeart } from 'react-icons/fa';
 import PostOptions from './PostOptions';
 import CommentSection from './Comment';
 
+
+function getAspectClass(width, height) {
+  if (!width || !height) return 'aspect-[4/5]';
+
+  const ratio = width / height;
+
+  if (ratio > 1.91) return 'aspect-[1.91/1]';
+  if (ratio < 0.8) return 'aspect-[4/5]';
+  return 'aspect-[1/1]';
+}
+
 function PostHeader({ avatar, name, time, onOptions }) {
   return (
     <header className="flex items-start gap-3 px-4 pt-4 md:px-0">
@@ -28,14 +39,27 @@ function PostHeader({ avatar, name, time, onOptions }) {
 }
 
 function PostGallery({ images }) {
+  const [aspectClass, setAspectClass] = useState('aspect-[4/5]');
+
+  useEffect(() => {
+    if (!images.length) return;
+
+    const img = new Image();
+    img.src = images[0].image;
+    img.onload = () => {
+      setAspectClass(getAspectClass(img.width, img.height));
+    };
+  }, [images]);
+
   if (!images.length) return null;
+
   return (
     <Swiper
       modules={[Pagination, Zoom]}
       zoom
       slidesPerView={1}
-      className="aspect-[4/5] w-full overflow-hidden md:rounded-md md:border border-gray-400 md:border-0"
-      pagination={{ clickable: false, type: "bullets", dynamicBullets: true }}
+      className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-400 md:border-0`}
+      pagination={{ clickable: false, type: 'bullets', dynamicBullets: true }}
     >
       {images.map((img, i) => (
         <SwiperSlide key={img.id ?? i}>

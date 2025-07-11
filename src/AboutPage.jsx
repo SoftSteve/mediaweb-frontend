@@ -20,9 +20,13 @@ export default function AboutPage() {
               {/* Foreground content */}
               <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-secondary">
                 {/* Avatar */}
-                <div className="h-40 w-40 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
-                  style={{ backgroundImage: `url('/brosis.jpeg')` }}
+                <div className="h-40 w-40 rounded-full overflow-hidden shadow-lg border-2 border-white">
+                <img
+                  src="/wedding.jpg"
+                  alt="Profile"
+                  className="h-full w-full object-cover"
                 />
+              </div>
 
                 {/* Title */}
                 <h1 className="text-2xl font-semibold">Lehman Wedding</h1>
