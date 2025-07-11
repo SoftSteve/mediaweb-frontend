@@ -39,18 +39,6 @@ function PostHeader({ avatar, name, time, onOptions }) {
 }
 
 function PostGallery({ images }) {
-  const [aspectClass, setAspectClass] = useState('aspect-[4/5]');
-
-  useEffect(() => {
-    if (!images.length) return;
-
-    const img = new Image();
-    img.src = images[0].image;
-    img.onload = () => {
-      setAspectClass(getAspectClass(img.width, img.height));
-    };
-  }, [images]);
-
   if (!images.length) return null;
 
   return (
@@ -58,19 +46,24 @@ function PostGallery({ images }) {
       modules={[Pagination, Zoom]}
       zoom
       slidesPerView={1}
-      className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-400 md:border-0`}
-      pagination={{ clickable: false, type: 'bullets', dynamicBullets: true }}
+      className="w-full max-w-lg overflow-hidden rounded-md border border-gray-300"
+      pagination={{ clickable: true, type: 'bullets', dynamicBullets: true }}
     >
       {images.map((img, i) => (
-        <SwiperSlide key={img.id ?? i}>
-          <div className="swiper-zoom-container h-full w-full">
-            <img
-              loading="lazy"
-              src={img.image}
-              alt={`post-media-${i}`}
-              className="h-full w-full object-contain"
-            />
-          </div>
+        <SwiperSlide key={img.id ?? i} className="relative w-full h-[80vw] md:h-[60vh] flex items-center justify-center bg-gray-100">
+          {/* Blurred background */}
+          <img
+            src={img.image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+          />
+          {/* Main image */}
+          <img
+            src={img.image}
+            alt={`post-media-${i}`}
+            className="relative max-h-full max-w-full object-contain rounded-md"
+          />
         </SwiperSlide>
       ))}
     </Swiper>
