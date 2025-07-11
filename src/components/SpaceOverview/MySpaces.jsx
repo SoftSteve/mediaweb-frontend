@@ -5,7 +5,6 @@ import { IoSearch, IoShareSocialOutline } from "react-icons/io5";
 import axios from "axios";
 import CreateModal from "./CreateSpaceModal";
 import SearchSpaceModal from "./SearchSpaceModal";
-import { API_URL } from "../../config";
 
 export default function MySpaces() {
   const navigate = useNavigate();

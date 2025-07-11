@@ -91,7 +91,7 @@ export default function SpaceRoom() {
 
   return (
     <div className="w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white">
-      <SpaceHeader/>
+      <SpaceHeader eventSpace={eventSpace}/>
       <Tabs
         eventSpaceId={id}
         eventSpace={eventSpace}
