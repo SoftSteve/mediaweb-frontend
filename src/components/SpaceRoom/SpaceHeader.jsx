@@ -8,7 +8,7 @@ export default function SpaceHeader({eventSpace}) {
       posts =  [],
       members = []
     } = eventSpace;
-
+   
     return (
   <div
     className="w-full h-80 relative bg-gradient-to-b rounded-b-xl shadow-md from-[#ece7e3] to-white"
@@ -18,7 +18,7 @@ export default function SpaceHeader({eventSpace}) {
     <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-secondary">
       {/* Avatar */}
       <div className="h-40 w-40 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
-        style={{ backgroundImage: `url(https://api.memory-branch.com/${cover_image})` }}
+        style={{ backgroundImage: `url(${cover_image})` }}
       />
 
       {/* Title */}
