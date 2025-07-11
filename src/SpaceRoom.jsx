@@ -46,12 +46,16 @@ export default function SpaceRoom() {
         `https://api.memory-branch.com/api/posts/?event_space=${id}&limit=${LIMIT}&offset=${offset}`,
         { credentials: 'include' }
       );
-      const data     = await res.json();
-      const newPosts = Array.isArray(data.results) ? data.results : data;
+      const data = await res.json();
+      const newPosts = Array.isArray(data.results) ? data.results : [];
 
-      setPosts(prev => [...prev, ...newPosts]);
-      setOffset(prev => prev + LIMIT);
-      setHasMore(Boolean(data.next));
+      if (newPosts.length > 0) {
+        setPosts(prev => [...prev, ...newPosts]);
+        setOffset(prev => prev + newPosts.length); // Only increment by what you actually received
+      }
+
+      // Determine if more data exists
+      setHasMore(Boolean(data.next) && newPosts.length === LIMIT);
     } catch (err) {
       console.error('Failed to fetch posts:', err);
     } finally {
@@ -63,7 +67,10 @@ export default function SpaceRoom() {
     setPosts([]);
     setOffset(0);
     setHasMore(true);
-    if (id) loadPosts();
+    if (id) {
+      loadingRef.current = false;
+      setTimeout(() => loadPosts(), 0);
+    } 
   }, [id]);
 
   const handlePostCreated = (newPost) => {
