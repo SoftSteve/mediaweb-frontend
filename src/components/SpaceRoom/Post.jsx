@@ -67,30 +67,41 @@ function PostGallery({ images }) {
       className="w-full max-w-xl overflow-hidden rounded-md border border-gray-200"
     >
       {images.map((img, i) => {
-        const aspect = imageRatios[i]; // width / height
-        const heightPercentage = 100 / aspect; // For padding-top trick
+  const aspect = imageRatios[i]; // width / height
+  const heightPercentage = 100 / aspect; // For padding-top trick
+  const isWide = aspect >= 1.8; // close to max
 
-        return (
-          <SwiperSlide key={img.id ?? i} className="relative w-full">
-            {/* Aspect Ratio Wrapper */}
-            <div className="relative w-full overflow-hidden" style={{ paddingTop: `${heightPercentage}%` }}>
-              {/* Blurred Background */}
-              <img
-                src={img.image}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110 z-0"
-              />
-              {/* Main Image */}
-              <img
-                src={img.image}
-                alt={`post-media-${i}`}
-                className="absolute inset-0 z-10 w-full h-full object-contain rounded-md"
-              />
-            </div>
-          </SwiperSlide>
-        );
-      })}
+  return (
+    <SwiperSlide key={img.id ?? i} className="relative w-full">
+      <div
+        className="relative w-full overflow-hidden rounded-md"
+        style={{ paddingTop: `${heightPercentage}%` }}
+      >
+        {/* Blurred Background (Visible even on wide images) */}
+        <img
+          src={img.image}
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover filter blur-lg scale-110 z-0 ${
+            isWide ? 'opacity-80' : 'opacity-60'
+          }`}
+        />
+
+        {/* Optional: dark overlay for contrast */}
+        {isWide && (
+          <div className="absolute inset-0 bg-black/10 z-10" />
+        )}
+
+        {/* Main Image */}
+        <img
+          src={img.image}
+          alt={`post-media-${i}`}
+          className="absolute inset-0 z-20 w-full h-full object-contain"
+        />
+      </div>
+    </SwiperSlide>
+  );
+})}
     </Swiper>
   );
 }
