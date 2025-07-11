@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Home from './Home';
 import Gallery from './Gallery';
 import More from './More';
 
 export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode, fetchMorePosts, hasMore, onPostCreated, onDeletePost, posts }) {
   const [activeTab, setActiveTab] = useState('home');
+  const tabRef = useRef(null);
 
+  useEffect(() => {
+    if (tabRef.current) {
+      tabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    }
+  }, [activeTab]);
   return (
     <div>
-      <div className="h-16 w-full flex flex-row items-center top-0 bg-white z-10">
+      <div
+      ref={tabRef} 
+      className="h-16 w-full flex flex-row items-center top-0 bg-white z-10">
         <div className="w-full flex justify-center">
           {['home', 'gallery', 'more'].map((tab) => (
             <button
