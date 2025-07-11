@@ -82,7 +82,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
 
   return (
     <div className='flex flex-col'>
-      <div className="backdrop-blur-md bg-white/70 dark:bg-black/30 p-3 px-5 flex flex-row flex-nowrap justify-center items-center gap-3
+      <div className="bg-white p-3 px-5 flex flex-row flex-nowrap justify-center items-center gap-3
                       md:w-1/3 md:self-center md:mr-12 transition-all duration-200">
         <button
           onClick={() => setOpen(true)}
