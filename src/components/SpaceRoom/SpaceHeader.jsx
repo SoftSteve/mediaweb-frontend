@@ -2,10 +2,7 @@
 export default function SpaceHeader() {
     return (
   <div
-    className="w-full mt-20 h-80 relative bg-cover bg-center"
-    style={{
-      backgroundImage: `url('/wedding.jpg')`,
-    }}
+    className="w-full h-80 relative bg-gradient-to-b from-[#ece7e3] to-white"
   >
     {/* Overlay blur & tint */}
     <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-0" />
@@ -14,7 +11,7 @@ export default function SpaceHeader() {
     <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-white">
       {/* Avatar */}
       <div className="h-24 w-24 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
-        style={{ backgroundImage: `url('/hs-4.jpg')` }}
+        style={{ backgroundImage: `url('/wedding.jpg')` }}
       />
 
       {/* Title */}
