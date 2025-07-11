@@ -4,7 +4,7 @@ import Gallery from './Gallery';
 import More from './More';
 
 export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode, fetchMorePosts, hasMore, onPostCreated, onDeletePost, posts }) {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('timeline');
   const tabRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
       ref={tabRef} 
       className="h-16 w-full flex flex-row items-center top-0 bg-white z-10">
         <div className="w-full flex justify-center">
-          {['home', 'gallery', 'more'].map((tab) => (
+          {['timeline', 'gallery', 'more'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -39,7 +39,7 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
       </div>
 
       <div className="w-full">
-        {activeTab === 'home' && <Home onPostCreated={onPostCreated} fetchMorePosts={fetchMorePosts} hasMore={hasMore}  onDeletePost={onDeletePost} eventSpaceId={eventSpaceId} spaceCode={spaceCode} posts={posts} />}
+        {activeTab === 'timeline' && <Home onPostCreated={onPostCreated} fetchMorePosts={fetchMorePosts} hasMore={hasMore}  onDeletePost={onDeletePost} eventSpaceId={eventSpaceId} spaceCode={spaceCode} posts={posts} />}
         {activeTab === 'gallery' && <Gallery posts={posts} />}
         {activeTab === 'more' && <More posts={posts} eventSpace={eventSpace} />}
       </div>
