@@ -8,9 +8,13 @@ export default function SpaceHeader() {
     {/* Foreground content */}
     <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-secondary">
       {/* Avatar */}
-      <div className="h-40 w-40 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
-        style={{ backgroundImage: `url('/Dog.jpg')` }}
-      />
+      <div className="h-40 w-40 rounded-full overflow-hidden shadow-lg border-2 border-white">
+        <img
+          src="/Dog.jpg"
+          alt="Profile"
+          className="h-full w-full object-contain"
+        />
+      </div>
 
       {/* Title */}
       <h1 className="text-2xl font-semibold">Lehman Wedding</h1>
