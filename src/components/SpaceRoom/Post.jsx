@@ -40,7 +40,6 @@ function PostHeader({ avatar, name, time, onOptions }) {
 
 function PostGallery({ images }) {
   const [aspectClass, setAspectClass] = useState('aspect-[4/5]');
-  const [isWide, setIsWide] = useState(false);
 
   useEffect(() => {
     if (!images.length) return;
@@ -48,9 +47,7 @@ function PostGallery({ images }) {
     const img = new Image();
     img.src = images[0].image;
     img.onload = () => {
-      const ratio = img.width / img.height;
       setAspectClass(getAspectClass(img.width, img.height));
-      setIsWide(ratio > 1.91); // true only if super wide
     };
   }, [images]);
 
@@ -61,20 +58,20 @@ function PostGallery({ images }) {
       modules={[Pagination, Zoom]}
       zoom
       slidesPerView={1}
-      className={`${aspectClass} w-full overflow-hidden border border-gray-500 md:rounded-md md:border border-gray-300 md:border-0`}
+      className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-300 md:border-0`}
       pagination={{ clickable: true, type: 'bullets', dynamicBullets: true }}
     >
       {images.map((img, i) => (
-        <SwiperSlide key={img.id ?? i} className="relative">
-          {/* Blurred background only for wide images */}
-          {isWide && (
-            <img
-              src={img.image}
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-70"
-            />
-          )}
+        <SwiperSlide key={img.id ?? i} className="relative w-full h-full">
+          {/* Clean blurred background for all */}
+          <img
+            src={img.image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-60 z-0"
+          />
 
+          {/* Main image */}
           <div className="swiper-zoom-container relative z-10 h-full w-full">
             <img
               loading="lazy"
