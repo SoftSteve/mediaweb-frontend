@@ -1,37 +1,38 @@
-import PostSection from "./PostSection"
+
 export default function SpaceHeader() {
-    return(
-        <div className="w-full h-1/3 bg-gradient-to-b from-[#ece7e3] to-white flex flex-col">
-            <div className="flex p-4 justify-center">
-                <div className="h-24 w-24 rounded-full bg-cover bg-center inset-0 resize-0"
-                    style={{
-                        backgroundImage: `url('/wedding.jpg')`
-                    }}
-                ></div>
-            </div>
-            <div className="flex justify-center">
-                <h1 className="text-2xl text-secondary font-semibold">
-                    Lehman Wedding
-                </h1>
-            </div>
-            <div className="grid grid-cols-2 px-8 pt-8 place-items-center">
-                <div className="flex flex-col items-center">
-                    <h1 className="text-xl text-secondary font-semibold">
-                        32
-                    </h1>
-                    <h1 className="text-gray-500 text-md">
-                        Posts
-                    </h1>
-                </div>
-                <div className="flex flex-col items-center">
-                    <h1 className="text-xl text-secondary font-semibold">
-                        15
-                    </h1>
-                    <h1 className="text-md text-gray-500">
-                        members
-                    </h1>
-                </div>
-            </div>
+    return (
+  <div
+    className="w-full mt-20 h-80 relative bg-cover bg-center"
+    style={{
+      backgroundImage: `url('/wedding.jpg')`,
+    }}
+  >
+    {/* Overlay blur & tint */}
+    <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-0" />
+
+    {/* Foreground content */}
+    <div className="relative z-10 flex flex-col h-full items-center justify-center gap-3 text-white">
+      {/* Avatar */}
+      <div className="h-24 w-24 rounded-full bg-cover bg-center shadow-lg border-2 border-white"
+        style={{ backgroundImage: `url('/hs-4.jpg')` }}
+      />
+
+      {/* Title */}
+      <h1 className="text-2xl font-semibold">Lehman Wedding</h1>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-10 pt-4 text-center">
+        <div>
+          <h1 className="text-xl font-bold">32</h1>
+          <p className="text-sm text-white/80">Posts</p>
         </div>
-    )
+        <div>
+          <h1 className="text-xl font-bold">15</h1>
+          <p className="text-sm text-white/80">Members</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 }

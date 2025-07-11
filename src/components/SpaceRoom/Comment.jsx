@@ -152,7 +152,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                                 value={comment}
                                 onInput={handleInput}
                                 className="w-full resize-none overflow-hidden rounded-full border
-                                        box-border border-gray-300 p-2 pl-4 pr-12 text-base text-black text-base
+                                        box-border border-gray-300 p-2 pl-4 pr-12 text-black text-base
                                         focus:border-black focus:outline-none"
                             />
                             

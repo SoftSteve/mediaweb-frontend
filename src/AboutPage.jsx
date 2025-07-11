@@ -11,7 +11,7 @@ export default function AboutPage() {
             <SpaceHeader/>
             <div>
                   <div className="h-16 w-full flex flex-row items-center top-0 bg-white z-10">
-                    <div className="w-full flex border-t border-border justify-center">
+                    <div className="w-full flex justify-center">
                       {['home', 'gallery', 'more'].map((tab) => (
                         <button
                           key={tab}
