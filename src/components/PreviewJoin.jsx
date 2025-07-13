@@ -22,7 +22,7 @@ export default function PreviewJoin({ space, spaceCode }) {
       >
         <div
           className="h-60 relative bg-cover bg-center"
-          style={{ backgroundImage: `url('${space.cover_image || '/wedding.jpg'}')` }}
+          style={{ backgroundImage: `url('https://api.memory-branch.com${space.cover_image || '/wedding.jpg'}')` }}
         >
           <div className="absolute inset-0 bg-black/25"></div>
         </div>
