@@ -1,29 +1,34 @@
-import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PreviewJoin from './components/PreviewJoin';
 
 export default function JoinRoute() {
-  const { code }  = useParams();
-  const navigate  = useNavigate();
+  const { code } = useParams();
+  const [spaceData, setSpaceData] = useState(null);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const res  = await fetch(
+        const res = await fetch(
           `https://api.memory-branch.com/api/space-lookup/?code=${encodeURIComponent(code)}`,
           { credentials: 'include' }
         );
         const data = await res.json().catch(() => ({}));
 
         if (res.ok && data.event_id) {
-          navigate(`/space/${data.event_id}`, { replace: true });
+          setSpaceData({ ...data, code });
         } else {
-          navigate('/not-found', { replace: true });
+          setNotFound(true);
         }
       } catch {
-        navigate('/not-found', { replace: true });
+        setNotFound(true);
       }
     })();
-  }, [code, navigate]);
+  }, [code]);
 
-  return null;
+  if (notFound) return <>Not found.</>;
+  if (!spaceData) return <>Loading...</>;
+
+  return <PreviewJoin space={spaceData} />;
 }

@@ -9,6 +9,7 @@ import { useUser } from './UserContext.jsx';
 import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
 import IconButton from './components/IconButton.jsx';
 import { GoogleIcon } from './components/CustomIcons.tsx';
+import useSpaceCode from './useSpaceCode.jsx';
 
 export default function Signin() {
   /* ───────────────────── state ───────────────────── */
@@ -23,7 +24,7 @@ export default function Signin() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const spaceCode = location.state?.spaceCode;
+  const spaceCode = useSpaceCode();
   const { setUser } = useUser();
 
   /* ───────────────────── fetch CSRF once ───────────────────── */
@@ -48,64 +49,60 @@ export default function Signin() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
       return;
     }
 
-    // ← Declare loginRes here
-    const loginRes = await fetch(`https://api.memory-branch.com/api/auth/login/`, {
-      method: 'POST',
-      credentials: 'include',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const loginRes = await fetch(`https://api.memory-branch.com/auth/login/`, {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!loginRes.ok) {
-      setError('Email or password is incorrect.');
-      return;
-    }
-
-    /* pull session */
-    const sessionRes = await fetch(`https://api.memory-branch.com/api/auth/session/`, {
-      credentials: 'include',
-      mode: 'cors',
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
-    });
-
-    if (!sessionRes.ok) {
-      setError('Failed to fetch user session.');
-      return;
-    }
-
-    const userData = await sessionRes.json();
-    setUser(userData);
-
-    /* optional redirect via space code */
-    if (spaceCode) {
-      const lookup = await fetch(
-        `https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`,
-        {
-          credentials: 'include',
-          mode: 'cors',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': csrfToken,
-          },
-        }
-      );
-      if (lookup.ok) {
-        const { event_id } = await lookup.json();
-        navigate(`/space/${event_id}`);
+      if (!loginRes.ok) {
+        setError('Email or password is incorrect.');
         return;
       }
+
+      const sessionRes = await fetch(`https://api.memory-branch.com/auth/session/`, {
+        credentials: 'include',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+
+      if (!sessionRes.ok) {
+        setError('Failed to fetch user session.');
+        return;
+      }
+
+      const userData = await sessionRes.json();
+      setUser(userData);
+
+      if (spaceCode) {
+        const lookup = await fetch(`https://api.memory-branch.com/space-lookup/?code=${spaceCode}`, {
+          credentials: 'include',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        if (lookup.ok) {
+          const { event_id } = await lookup.json();
+          return navigate(`/space/${event_id}`);
+        }
+      }
+
+      // Fallback: Go to dashboard or home
+      navigate('/');
+    } catch (err) {
+      setError('Unexpected error. Please try again.');
     }
-    navigate('/');
   }
 
   /* ───────────────────── UI ───────────────────── */

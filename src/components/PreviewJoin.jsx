@@ -1,9 +1,17 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-export default function PreviewJoin() {
+export default function PreviewJoin({ space }) {
+  const navigate = useNavigate();
+
+  const handleJoin = () => {
+    navigate('/login', {
+      state: { spaceCode: space.code },
+    });
+  };
+
   return (
-    <div className="w-full h-screen flex flex-col px-6 justify-center items-center">
-      
+    <div className="w-full h-screen flex flex-col px-6 justify-center items-center bg-gray-50">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -14,26 +22,26 @@ export default function PreviewJoin() {
       >
         <div
           className="h-60 relative bg-cover bg-center"
-          style={{ backgroundImage: `url('/wedding.jpg')` }}
+          style={{ backgroundImage: `url('${space.banner || '/wedding.jpg'}')` }}
         >
           <div className="absolute inset-0 bg-black/25"></div>
         </div>
 
         <div className="p-6 flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Lehman Wedding</h1>
-            <p className="text-sm text-gray-500">You're invited to view and share memories from this special event.</p>
+            <h1 className="text-2xl font-bold text-gray-800">{space.title || 'Unnamed Event'}</h1>
+            <p className="text-sm text-gray-500">You're invited to join this space.</p>
           </div>
 
           <motion.button
             whileTap={{ scale: 0.95 }}
+            onClick={handleJoin}
             className="bg-primary text-white font-semibold py-2 rounded-lg shadow hover:bg-primary/90 transition-all"
           >
             Join Space
           </motion.button>
         </div>
       </motion.div>
-      
     </div>
   );
 }
