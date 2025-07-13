@@ -1,4 +1,4 @@
-function CustomSpinner({ size = 20, color = 'text-white' }) {
+export default function CustomSpinner({ size = 20, color = 'text-white' }) {
   return (
     <svg
       className={`animate-spin ${color}`}

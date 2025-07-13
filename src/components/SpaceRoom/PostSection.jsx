@@ -6,7 +6,7 @@ import { useUser } from '../../UserContext'
 import { X } from 'lucide-react'
 import { IoShareOutline } from "react-icons/io5";
 import { IoAdd } from "react-icons/io5";
-import CustomSpinner from "./components/CustomSpinner.jsx"
+import CustomSpinner from '../CustomSpinner'
 
 
 const MAX_IMAGES = 8
