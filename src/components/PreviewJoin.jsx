@@ -11,7 +11,7 @@ export default function PreviewJoin({ space, spaceCode }) {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col px-6 justify-center items-center bg-gray-50">
+    <div className="w-full h-screen flex flex-col px-6 justify-center items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

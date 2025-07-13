@@ -23,59 +23,63 @@ export default function CreateAccount() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    formData.append('email', email);
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);
+  formData.append('email', email);
 
-    try {
-      const response = await fetch(`https://api.memory-branch.com/api/auth/create-account/`, {
-        method: 'POST',
-        body: formData,
+  try {
+    const response = await fetch(`https://api.memory-branch.com/api/auth/create-account/`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+      headers: {
+        'X-CSRFToken': getCsrfTokenFromCookie(),
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.error || 'Account creation failed');
+    }
+
+    const userRes = await fetch(`https://api.memory-branch.com/api/auth/session/`, {
+      credentials: 'include',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+
+    if (!userRes.ok) {
+      throw new Error('Could not fetch user session.');
+    }
+
+    const userData = await userRes.json();
+    setUser(userData);
+
+    if (spaceCode) {
+      const res = await fetch(`https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`, {
         credentials: 'include',
         headers: {
-          'X-CSRFToken': getCsrfTokenFromCookie(),
+          'X-Requested-With': 'XMLHttpRequest',
         },
       });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data?.error || 'Account creation failed');
-        }
-        
-        const userRes = await fetch('https://api.memory-branch.com/api/auth/session/', {
-        credentials: 'include',
-      });
-
-      const userData = await userRes.json();
-      setUser(userData);
-      if (spaceCode) {
-        const res = await fetch(`https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`, {
-          credentials: 'include',
-          headers: {
-            'X-CSRFToken': getCsrfTokenFromCookie(),
-          },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          navigate(`/space/${data.event_id}`);
-          return;
-        } else {
-          navigate('/spaces'); 
-          return;
-        }
+      if (res.ok) {
+        const { event_id } = await res.json();
+        return navigate(`/space/${event_id}`);
       } else {
-        navigate('/'); 
+        return navigate('/spaces'); 
       }
-    } catch (err) {
-      setError('Network error');
     }
-  };
+
+    navigate('/');
+  } catch (err) {
+    setError(err.message || 'An unexpected error occurred.');
+  }
+};
 
   return (
     <div className="flex flex-col w-full min-h-screen px-6 mt-20 bg-[#ece7e3]">

@@ -12,7 +12,6 @@ import { GoogleIcon } from './components/CustomIcons.tsx';
 import useSpaceCode from './useSpaceCode.jsx';
 
 export default function Signin() {
-  /* ───────────────────── state ───────────────────── */
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +26,6 @@ export default function Signin() {
   const spaceCode = useSpaceCode();
   const { setUser } = useUser();
 
-  /* ───────────────────── fetch CSRF once ───────────────────── */
   useEffect(() => {
     fetch(`https://api.memory-branch.com/api/csrf/`, {
       credentials: 'include',
@@ -45,7 +43,6 @@ export default function Signin() {
       .catch(() => setError('Network error while fetching CSRF token.'));
   }, []);
 
-  /* ───────────────────── form submit ───────────────────── */
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
@@ -87,7 +84,7 @@ export default function Signin() {
       setUser(userData);
 
       if (spaceCode) {
-        const lookup = await fetch(`https://api.memory-branch.com/space-lookup/?code=${spaceCode}`, {
+        const lookup = await fetch(`https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`, {
           credentials: 'include',
           headers: { 'X-Requested-With': 'XMLHttpRequest' },
         });
@@ -98,14 +95,12 @@ export default function Signin() {
         }
       }
 
-      // Fallback: Go to dashboard or home
       navigate('/');
     } catch (err) {
       setError('Unexpected error. Please try again.');
     }
   }
 
-  /* ───────────────────── UI ───────────────────── */
   if (!csrfReady)
     return <div className="p-6 text-white">Loading security…</div>;
 
