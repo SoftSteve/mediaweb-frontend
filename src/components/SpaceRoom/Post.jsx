@@ -122,10 +122,8 @@ function Post({
   const [showOptions, setShowOptions] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
 
-  // Fetch initial liked status if not passed in props
   useEffect(() => {
     if (postId && initialLiked === undefined) {
-      // Fetch if current user liked this post
       fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
         credentials: 'include',
       })
@@ -135,11 +133,10 @@ function Post({
             setLiked(data.liked);
           }
         })
-        .catch(() => {}); // ignore errors for now
+        .catch(() => {});
     }
   }, [postId, initialLiked]);
 
-  // Like toggle calls backend
   const toggleLike = useCallback(async () => {
     try {
       const res = await fetch(
@@ -161,7 +158,6 @@ function Post({
       setLikes(data.like_count);
     } catch (error) {
       console.error('Failed to toggle like:', error);
-      // Optionally: show user an error message or revert UI change
     }
   }, [postId]);
 
