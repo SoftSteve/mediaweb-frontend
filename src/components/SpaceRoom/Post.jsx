@@ -113,18 +113,57 @@ function Post({
   time = "just now",
   image = [],
   postLikes = 0,
+  initialLiked = false, // pass from parent if possible
   onDeletePost,
 }) {
   const [likes, setLikes] = useState(postLikes);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(initialLiked);
   const [showComments, setShowComments] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
 
-  const toggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
-    setLikes((prev) => (liked ? prev - 1 : prev + 1));
-  }, [liked]);
+  // Fetch initial liked status if not passed in props
+  useEffect(() => {
+    if (postId && initialLiked === undefined) {
+      // Fetch if current user liked this post
+      fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.liked !== undefined) {
+            setLiked(data.liked);
+          }
+        })
+        .catch(() => {}); // ignore errors for now
+    }
+  }, [postId, initialLiked]);
+
+  // Like toggle calls backend
+  const toggleLike = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `https://api.memory-branch.com/api/posts/${postId}/like-toggle/`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        }
+      );
+      if (!res.ok) throw new Error('Like toggle failed');
+
+      const data = await res.json();
+
+      setLiked(data.liked);
+      setLikes(data.like_count);
+    } catch (error) {
+      console.error('Failed to toggle like:', error);
+      // Optionally: show user an error message or revert UI change
+    }
+  }, [postId]);
 
   useEffect(() => {
     const fetchCommentCount = async () => {
@@ -144,7 +183,6 @@ function Post({
 
   return (
     <article className="flex w-full max-w-xl flex-col gap-2 lg:w-1/4">
-
       <PostHeader
         avatar={profilePicture}
         name={name}
@@ -173,6 +211,7 @@ function Post({
           onClose={() => setShowOptions(false)}
         />
       )}
+
       {showComments && (
         <CommentSection
           isOpen={showComments}
