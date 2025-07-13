@@ -4,7 +4,8 @@ import PreviewJoin from './components/PreviewJoin';
 
 export default function JoinRoute() {
   const { code } = useParams();
-  const [spaceData, setSpaceData] = useState(null);
+  const [eventData, setEventData] = useState(null);
+  const [spaceCode, setSpaceCode] = useState(null);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
@@ -14,10 +15,23 @@ export default function JoinRoute() {
           `https://api.memory-branch.com/api/space-lookup/?code=${encodeURIComponent(code)}`,
           { credentials: 'include' }
         );
-        const data = await res.json().catch(() => ({}));
+        const lookup = await res.json();
 
-        if (res.ok && data.event_id) {
-          setSpaceData({ ...data, code });
+        if (!res.ok || !lookup.event_id) {
+          setNotFound(true);
+          return;
+        }
+
+        // Now fetch full event data
+        const eventRes = await fetch(
+          `https://api.memory-branch.com/api/eventspace/${lookup.event_id}/`,
+          { credentials: 'include' }
+        );
+
+        const fullEvent = await eventRes.json();
+        if (eventRes.ok) {
+          setEventData(fullEvent);
+          setSpaceCode(code);
         } else {
           setNotFound(true);
         }
@@ -28,7 +42,7 @@ export default function JoinRoute() {
   }, [code]);
 
   if (notFound) return <>Not found.</>;
-  if (!spaceData) return <>Loading...</>;
+  if (!eventData) return <>Loading…</>;
 
-  return <PreviewJoin space={spaceData} />;
+  return <PreviewJoin space={eventData} spaceCode={spaceCode} />;
 }

@@ -1,12 +1,9 @@
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-
-export default function PreviewJoin({ space }) {
+export default function PreviewJoin({ space, spaceCode }) {
   const navigate = useNavigate();
 
   const handleJoin = () => {
     navigate('/login', {
-      state: { spaceCode: space.code },
+      state: { spaceCode: spaceCode, eventId: space.id },
     });
   };
 
@@ -22,14 +19,14 @@ export default function PreviewJoin({ space }) {
       >
         <div
           className="h-60 relative bg-cover bg-center"
-          style={{ backgroundImage: `url('${space.banner || '/wedding.jpg'}')` }}
+          style={{ backgroundImage: `url('${space.cover_image || '/wedding.jpg'}')` }}
         >
           <div className="absolute inset-0 bg-black/25"></div>
         </div>
 
         <div className="p-6 flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">{space.title || 'Unnamed Event'}</h1>
+            <h1 className="text-2xl font-bold text-gray-800">{space.name}</h1>
             <p className="text-sm text-gray-500">You're invited to join this space.</p>
           </div>
 
