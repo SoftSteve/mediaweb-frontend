@@ -152,7 +152,7 @@ function Post({
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRToken': getCsrfToken()
+            'X-CSRFToken': getCsrfToken()
           },
         }
       );
