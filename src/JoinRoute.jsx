@@ -4,7 +4,7 @@ import PreviewJoin from './components/PreviewJoin';
 
 export default function JoinRoute() {
   const { code } = useParams();
-  const [eventData, setEventData] = useState(null);
+  const [space, setSpace] = useState(null);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
@@ -19,35 +19,22 @@ export default function JoinRoute() {
           return;
         }
 
-        const lookup = await res.json();
-
-        if (!lookup.event_id) {
+        const data = await res.json();
+        if (!data.id) {
           setNotFound(true);
           return;
         }
 
-        const eventRes = await fetch(
-          `https://api.memory-branch.com/api/eventspace/${lookup.event_id}/`
-        );
-
-        if (!eventRes.ok) {
-          setNotFound(true);
-          return;
-        }
-
-        const fullEvent = await eventRes.json();
-        setEventData(fullEvent);
-      } catch (error) {
-        console.error('Fetch error:', error);
+        setSpace(data);
+      } catch (err) {
+        console.error(err);
         setNotFound(true);
       }
     })();
   }, [code]);
 
-  if (notFound) {
-    return <div className="p-4 text-center text-red-600">Space not found.</div>;
-  }
-  if (!eventData) return <div className="p-4 text-center">Loading…</div>;
+  if (notFound)  return <div className="p-4 text-center text-red-600">Space not found.</div>;
+  if (!space)    return <div className="p-4 text-center">Loading…</div>;
 
-  return <PreviewJoin event={eventData} spaceCode={code} />;
+  return <PreviewJoin space={space} spaceCode={code} />;
 }
