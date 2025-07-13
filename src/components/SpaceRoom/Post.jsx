@@ -136,18 +136,18 @@ function Post({
   }, [initialLiked]);
 
   useEffect(() => {
-    if (postId && initialLiked === undefined) {
-      fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
-        credentials: 'include',
+    if (!postId) return;
+
+    fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.liked !== undefined) setLiked(data.liked);
+        if (data.like_count !== undefined) setLikes(data.like_count);
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.liked !== undefined) setLiked(data.liked);
-          if (data.like_count !== undefined) setLikes(data.like_count);
-        })
-        .catch(() => {});
-    }
-  }, [postId, initialLiked]);
+      .catch(() => {});
+  }, [postId]);
 
   const toggleLike = useCallback(async () => {
     try {
