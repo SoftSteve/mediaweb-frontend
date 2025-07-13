@@ -134,9 +134,8 @@ function Post({
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.liked !== undefined) {
-            setLiked(data.liked);
-          }
+          if (data.liked !== undefined) setLiked(data.liked);
+          if (data.like_count !== undefined) setLikes(data.like_count);
         })
         .catch(() => {});
     }
