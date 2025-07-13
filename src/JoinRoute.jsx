@@ -25,5 +25,5 @@ export default function JoinRoute() {
     })();
   }, [code, navigate]);
 
-  return null;           // or a spinner component
+  return null;
 }
