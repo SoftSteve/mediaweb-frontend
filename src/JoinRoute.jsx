@@ -4,45 +4,51 @@ import PreviewJoin from './components/PreviewJoin';
 
 export default function JoinRoute() {
   const { code } = useParams();
+  const navigate = useNavigate();
   const [eventData, setEventData] = useState(null);
-  const [spaceCode, setSpaceCode] = useState(null);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
         const res = await fetch(
-          `https://api.memory-branch.com/api/space-lookup/?code=${encodeURIComponent(code)}`,
-          { credentials: 'include' }
+          `https://api.memory-branch.com/api/space-preview/?code=${encodeURIComponent(code)}`
         );
-        const lookup = await res.json();
 
-        if (!res.ok || !lookup.event_id) {
+        if (!res.ok) {
           setNotFound(true);
           return;
         }
 
-        // Now fetch full event data
+        const lookup = await res.json();
+
+        if (!lookup.event_id) {
+          setNotFound(true);
+          return;
+        }
+
         const eventRes = await fetch(
-          `https://api.memory-branch.com/api/eventspace/${lookup.event_id}/`,
-          { credentials: 'include' }
+          `https://api.memory-branch.com/api/eventspace/${lookup.event_id}/`
         );
 
-        const fullEvent = await eventRes.json();
-        if (eventRes.ok) {
-          setEventData(fullEvent);
-          setSpaceCode(code);
-        } else {
+        if (!eventRes.ok) {
           setNotFound(true);
+          return;
         }
-      } catch {
+
+        const fullEvent = await eventRes.json();
+        setEventData(fullEvent);
+      } catch (error) {
+        console.error('Fetch error:', error);
         setNotFound(true);
       }
     })();
   }, [code]);
 
-  if (notFound) return <>Not found.</>;
-  if (!eventData) return <>Loading…</>;
+  if (notFound) {
+    return <div className="p-4 text-center text-red-600">Space not found.</div>;
+  }
+  if (!eventData) return <div className="p-4 text-center">Loading…</div>;
 
-  return <PreviewJoin space={eventData} spaceCode={spaceCode} />;
+  return <PreviewJoin event={eventData} spaceCode={code} />;
 }
