@@ -4,7 +4,6 @@ import PreviewJoin from './components/PreviewJoin';
 
 export default function JoinRoute() {
   const { code } = useParams();
-  const navigate = useNavigate();
   const [eventData, setEventData] = useState(null);
   const [notFound, setNotFound] = useState(false);
 
