@@ -5,7 +5,7 @@ export default function PreviewJoin({ space, spaceCode }) {
   const navigate = useNavigate();
 
   const handleJoin = () => {
-    navigate('/login', {
+    navigate('/sign-in', {
       state: { spaceCode: spaceCode, eventId: space.id },
     });
   };
