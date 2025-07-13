@@ -56,7 +56,7 @@ export default function ChoiceModal({ isOpen, onClose }) {
                     text='Sign up with Google'
                 />
                 <IconButton
-                  icon={<MdEmail/>}
+                  icon={<MdEmail className='text-2xl'/>}
                   text='Sign up with email'
                   onClick={() => navigate('/sign-up', {state: {spaceCode}})}
                 />
