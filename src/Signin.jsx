@@ -56,7 +56,7 @@ export default function Signin() {
     }
 
     try {
-      const loginRes = await fetch(`https://api.memory-branch.com/auth/login/`, {
+      const loginRes = await fetch(`https://api.memory-branch.com/api/auth/login/`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -73,7 +73,7 @@ export default function Signin() {
         return;
       }
 
-      const sessionRes = await fetch(`https://api.memory-branch.com/auth/session/`, {
+      const sessionRes = await fetch(`https://api.memory-branch.com/api/auth/session/`, {
         credentials: 'include',
         headers: { 'X-Requested-With': 'XMLHttpRequest' },
       });
