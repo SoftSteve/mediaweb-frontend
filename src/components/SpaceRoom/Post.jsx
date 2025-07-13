@@ -113,7 +113,7 @@ function Post({
   time = "just now",
   image = [],
   postLikes = 0,
-  initialLiked = false, // pass from parent if possible
+  initialLiked = false,
   onDeletePost,
 }) {
   const [likes, setLikes] = useState(postLikes);
@@ -121,6 +121,11 @@ function Post({
   const [showComments, setShowComments] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
+
+  function getCsrfToken() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : '';
+  }
 
   useEffect(() => {
     if (postId && initialLiked === undefined) {
@@ -147,6 +152,7 @@ function Post({
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRToken': getCsrfToken()
           },
         }
       );
