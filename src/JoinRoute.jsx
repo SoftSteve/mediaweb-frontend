@@ -20,7 +20,7 @@ export default function JoinRoute() {
         }
 
         const data = await res.json();
-        if (!data.id) {
+        if (!data.event_id) {
           setNotFound(true);
           return;
         }
