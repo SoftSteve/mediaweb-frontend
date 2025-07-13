@@ -1,14 +1,37 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useUser } from "../UserContext";
 
 export default function PreviewJoin({ space, spaceCode }) {
   const navigate = useNavigate();
+  const { user } = useUser(); 
 
-  const handleJoin = () => {
+const handleJoin = async () => {
+  if (user) {
+    try {
+      const res = await fetch(
+        `https://api.memory-branch.com/api/space-lookup/?code=${spaceCode}`,
+        {
+          credentials: 'include',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        navigate(`/space/${data.event_id}`);
+      } else {
+        alert('Failed to join space.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong.');
+    }
+  } else {
     navigate('/sign-in', {
       state: { spaceCode: spaceCode, eventId: space.id },
     });
-  };
+  }
+};
 
   return (
     <div className="w-full h-screen flex flex-col px-6 justify-center items-center">
@@ -38,7 +61,7 @@ export default function PreviewJoin({ space, spaceCode }) {
             onClick={handleJoin}
             className="bg-primary text-white font-semibold py-2 rounded-lg shadow hover:bg-primary/90 transition-all"
           >
-            Join Space
+            {user ? 'Enter Space': 'Join Space'}
           </motion.button>
         </div>
       </motion.div>
