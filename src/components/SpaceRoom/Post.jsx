@@ -127,6 +127,16 @@ function Post({
     return match ? match[1] : '';
   }
 
+  // Sync likes state if postLikes prop changes
+  useEffect(() => {
+    setLikes(postLikes);
+  }, [postLikes]);
+
+  // Sync liked state if initialLiked prop changes
+  useEffect(() => {
+    setLiked(initialLiked);
+  }, [initialLiked]);
+
   useEffect(() => {
     if (postId && initialLiked === undefined) {
       fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
@@ -151,7 +161,7 @@ function Post({
           headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': getCsrfToken()
+            'X-CSRFToken': getCsrfToken(),
           },
         }
       );
