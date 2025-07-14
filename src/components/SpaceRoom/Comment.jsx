@@ -142,7 +142,7 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
             <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col pb-4">
               
               {/* Header Row */}
-              <div className="relative flex items-center justify-center px-4 pt-4 pb-2 border-b">
+              <div className="relative flex items-center justify-center px-4 pt-4 pb-2">
                 <DialogTitle className="text-lg font-semibold text-center w-full">
                     Comments
                 </DialogTitle>
