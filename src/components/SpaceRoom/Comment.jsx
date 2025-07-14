@@ -42,7 +42,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
 
             const timeout = setTimeout(() => {
             fetchComments();
-            }, 100);
+            }, 150);
 
             return () => clearTimeout(timeout);
         }
@@ -135,8 +135,6 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                     leaveTo="translate-y-full"
                   >
                     <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col">
-                      {/* Drag Handle */}
-                      <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
         
                       {/* Modal Title */}
                       <DialogTitle className="text-lg font-semibold text-center mb-2">
