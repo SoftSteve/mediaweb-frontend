@@ -135,6 +135,13 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                     leaveTo="translate-y-full"
                   >
                     <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col">
+                        <button
+                            onClick={handleClose}
+                            className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700 focus:outline-none"
+                            aria-label="Close"
+                            >
+                            <IoMdClose />
+                        </button>
         
                       {/* Modal Title */}
                       <DialogTitle className="text-lg font-semibold text-center mb-2">
