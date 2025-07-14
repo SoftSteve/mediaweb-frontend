@@ -122,7 +122,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                 </TransitionChild>
         
                 {/* Bottom Sheet Panel */}
-                <div className="fixed inset-0 flex items-end">
+                <div className="fixed inset-0 flex items-center justify-center">
                   <TransitionChild
                     as={Fragment}
                     enter="transform transition ease-out duration-300"

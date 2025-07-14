@@ -53,7 +53,7 @@ export default function PostOptions({isOpen, onClose, postId, onDeletePost, imag
                 >
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
                 </TransitionChild>
-                <div className="fixed inset-0 flex items-end justify-center">
+                <div className="fixed inset-0 flex items-center justify-center">
                     <TransitionChild
                         as={Fragment}
                         enter="transform transition ease-out duration-300"
