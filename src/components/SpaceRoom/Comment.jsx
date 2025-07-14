@@ -31,7 +31,6 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
 
   useEffect(() => {
     if (isOpen && postId) {
-      // Delay fetch until after the initial render
       const frame = requestAnimationFrame(() => {
         const fetchComments = async () => {
           setLoading(true);
@@ -143,18 +142,18 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
             <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col pb-4">
               
               {/* Header Row */}
-              <div className="flex items-center justify-between px-4 pt-4 pb-2 border-b">
-                <DialogTitle className="text-lg font-semibold">
-                  Comments
+              <div className="relative flex items-center justify-center px-4 pt-4 pb-2 border-b">
+                <DialogTitle className="text-lg font-semibold text-center w-full">
+                    Comments
                 </DialogTitle>
                 <button
-                  onClick={handleClose}
-                  className="text-2xl text-gray-500 hover:text-gray-700 focus:outline-none"
-                  aria-label="Close"
+                    onClick={handleClose}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500 hover:text-gray-700 focus:outline-none"
+                    aria-label="Close"
                 >
-                  <IoMdClose />
+                    <IoMdClose />
                 </button>
-              </div>
+                </div>
 
               {/* Content */}
               <div className="flex flex-col w-full gap-4 px-4 overflow-auto" style={{ maxHeight: 'calc(80vh - 140px)' }}>
