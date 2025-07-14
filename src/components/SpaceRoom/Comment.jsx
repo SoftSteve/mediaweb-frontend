@@ -25,26 +25,28 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
     useEffect(() => {
         if (isOpen && postId) {
             const fetchComments = async () => {
-                setLoading(true);
-                try {
-                    const response = await fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
-                        credentials: 'include'
-                    });
-                    const data = await response.json();
-                    setComments(data.comments || []);
-
-                    onCommentAdded?.(data.comments?.length || 0);
-
-                } catch (err) {
-                    console.error("Failed to load comments", err);
-                } finally {
-                    setLoading(false);
-                }
+            setLoading(true);
+            try {
+                const response = await fetch(`https://api.memory-branch.com/api/posts/${postId}/`, {
+                credentials: 'include'
+                });
+                const data = await response.json();
+                setComments(data.comments || []);
+                onCommentAdded?.(data.comments?.length || 0);
+            } catch (err) {
+                console.error("Failed to load comments", err);
+            } finally {
+                setLoading(false);
+            }
             };
 
+            const timeout = setTimeout(() => {
             fetchComments();
+            }, 100);
+
+            return () => clearTimeout(timeout);
         }
-    }, [isOpen, postId, commentPostedTrigger]);
+        }, [isOpen, postId, commentPostedTrigger]);
 
 
     function getCookie(name) {
@@ -111,10 +113,10 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                 {/* Overlay */}
                 <TransitionChild
                   as={Fragment}
-                  enter="ease-out duration-200"
+                  enter="ease-out duration-150"
                   enterFrom="opacity-0"
                   enterTo="opacity-100"
-                  leave="ease-in duration-200"
+                  leave="ease-in duration-150"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
@@ -132,7 +134,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                     leaveFrom="translate-y-0"
                     leaveTo="translate-y-full"
                   >
-                    <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col md:w-1/5 px-4 py-6">
+                    <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col">
                       {/* Drag Handle */}
                       <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
         
