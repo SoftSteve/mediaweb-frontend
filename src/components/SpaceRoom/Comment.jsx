@@ -140,24 +140,26 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
             leaveFrom="translate-y-0"
             leaveTo="translate-y-full"
           >
-            <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col">
-              <button
-                onClick={handleClose}
-                className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
+            <DialogPanel className="relative w-full h-[70vh] bg-white rounded-t-2xl shadow-xl flex flex-col pb-4">
+              
+              {/* Header Row */}
+              <div className="flex items-center justify-between px-4 pt-4 pb-2 border-b">
+                <DialogTitle className="text-lg font-semibold">
+                  Comments
+                </DialogTitle>
+                <button
+                  onClick={handleClose}
+                  className="text-2xl text-gray-500 hover:text-gray-700 focus:outline-none"
+                  aria-label="Close"
                 >
-                    <IoMdClose />
+                  <IoMdClose />
                 </button>
-              
-              {/* Modal Title */}
-              <DialogTitle className="text-lg font-semibold text-center mb-2">
-                Comments
-              </DialogTitle>
-
-              
+              </div>
 
               {/* Content */}
-              <div className="flex flex-col w-full gap-4 overflow-auto pr-1" style={{ maxHeight: 'calc(80vh - 140px)' }}>
+              <div className="flex flex-col w-full gap-4 px-4 overflow-auto" style={{ maxHeight: 'calc(80vh - 140px)' }}>
+                
+                {/* Comment Input */}
                 <form onSubmit={handleSubmit} className="relative flex w-full">
                   <textarea
                     ref={taRef}
@@ -166,9 +168,8 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
                     placeholder="Type your comment."
                     value={comment}
                     onInput={handleInput}
-                    className="w-full resize-none overflow-hidden rounded-full border box-border border-gray-300 p-2 pl-4 pr-12 text-black text-base focus:border-black focus:outline-none"
+                    className="w-full resize-none overflow-hidden rounded-full border border-gray-300 p-2 pl-4 pr-12 text-black text-base focus:border-black focus:outline-none"
                   />
-
                   <button
                     type="submit"
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-2 text-blue-500 transition hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -177,23 +178,24 @@ export default function CommentSection({ isOpen, onClose, postId, onCommentAdded
                   </button>
                 </form>
 
-                <div className="flex-1 overflow-y-auto px-4 space-y-4">
+                {/* Comment List */}
+                <div className="flex-1 overflow-y-auto space-y-4 custom-scroll pr-1">
                   {loading ? (
                     <p className="text-gray-500 text-sm">Loading comments...</p>
                   ) : comments.length === 0 ? (
                     <p className="text-gray-500 text-sm">No comments yet.</p>
                   ) : (
                     comments.map((comment, index) => (
-                      <div key={index} className="flex flex-row w-full gap-2 items-start">
+                      <div key={index} className="flex gap-3 items-start">
                         <div
-                          className="bg-primary min-w-10 min-h-10 rounded-full shrink-0 bg-cover bg-center"
+                          className="w-10 h-10 rounded-full bg-cover bg-center shrink-0"
                           style={{
                             backgroundImage: `url(${comment.author?.profile_picture || '/default-avatar.jpg'})`,
                           }}
-                        ></div>
+                        />
                         <div className="flex flex-col pr-6">
                           <h1 className="text-sm font-bold">{comment.author?.username || 'Unknown'}</h1>
-                          <h1 className="text-md text-black">{comment.text}</h1>
+                          <p className="text-md text-black">{comment.text}</p>
                         </div>
                       </div>
                     ))
