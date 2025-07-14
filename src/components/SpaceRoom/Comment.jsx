@@ -122,7 +122,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                 </TransitionChild>
         
                 {/* Bottom Sheet Panel */}
-                <div className="fixed inset-0 flex items-center justify-center">
+                <div className="fixed inset-0 flex items-end">
                   <TransitionChild
                     as={Fragment}
                     enter="transform transition ease-out duration-300"
@@ -132,7 +132,7 @@ export default function CommentSection({isOpen, onClose, postId, onCommentAdded}
                     leaveFrom="translate-y-0"
                     leaveTo="translate-y-full"
                   >
-                    <DialogPanel className="w-full h-[70vh] bg-white rounded-t-2xl px-4 py-6 shadow-xl overflow-hidden flex flex-col">
+                    <DialogPanel className="relative w-full bg-white rounded-t-2xl shadow-xl flex flex-col md:w-1/5 px-4 py-6">
                       {/* Drag Handle */}
                       <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
         

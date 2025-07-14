@@ -53,7 +53,7 @@ export default function PostOptions({isOpen, onClose, postId, onDeletePost, imag
                 >
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
                 </TransitionChild>
-                <div className="fixed inset-0 flex items-center justify-center">
+                <div className="fixed inset-0 flex items-end">
                     <TransitionChild
                         as={Fragment}
                         enter="transform transition ease-out duration-300"
@@ -63,7 +63,7 @@ export default function PostOptions({isOpen, onClose, postId, onDeletePost, imag
                         leaveFrom="translate-y-0"
                         leaveTo="translate-y-full"
                         >
-                    <DialogPanel className="w-full bg-white rounded-t-2xl px-4 py-6 shadow-xl md:w-1/5">
+                    <DialogPanel className="relative w-full bg-white rounded-t-2xl shadow-xl flex flex-col md:w-1/5 px-4 py-6">
                         <div className="w-16 h-1.5 bg-gray-300 rounded-full mx-auto mb-4" 
                             onClick={onClose}
                         />
