@@ -100,9 +100,10 @@ export default function NavBar() {
         }}
       >
         {showBack ? (
-          <>
+          <div className='text-[#3F3F44]'>
             <BiArrowBack className="text-2xl" />
-          </>
+            <h1 className='text-xl'>Home</h1>
+          </div>
         ) : (
           <img
             src="/final-logo.png"
