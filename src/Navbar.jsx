@@ -6,6 +6,7 @@ import { IoMdPersonAdd } from 'react-icons/io';
 import { PiSignOutLight } from 'react-icons/pi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from './UserContext';
+import { IoArrowBack } from "react-icons/io5";
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -100,14 +101,19 @@ export default function NavBar() {
           }
         }}
       >
-        <div
-          className="w-10 h-10 rounded-full bg-cover bg-center bg-gray-600"
-          style={{
-            backgroundImage: `url('/logocirc.png')`
-          }}
-        />
+        {showBack ? (
+          <IoArrowBack className="text-3xl" />
+        ) : (
+          <div
+            className="w-10 h-10 rounded-full bg-cover bg-center bg-gray-600"
+            style={{
+              backgroundImage: `url('/logocirc.png')`
+            }}
+          />
+        )}
+        
         <h1 className="text-2xl font-semibold text-black">
-          {showBack ? "Back" : "MemoryBranch"}
+          {showBack ? "Home" : "MemoryBranch"}
         </h1>
       </div>
       
