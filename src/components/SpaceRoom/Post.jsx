@@ -190,8 +190,6 @@ function Post({
     fetchCommentCount();
   }, [postId]);
 
-  console.log('PostActions props:', { liked, likes });
-
   return (
     <article className="flex w-full max-w-xl flex-col gap-2 lg:w-1/4">
       <PostHeader
