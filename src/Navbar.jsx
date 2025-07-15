@@ -80,8 +80,8 @@ export default function NavBar() {
 
   useEffect(() => {
     const isOnEventPage =
-      location.pathname.startsWith("/spaces/") &&
-      location.pathname !== "/spaces";
+      location.pathname.startsWith("/space/") &&
+      location.pathname !== "/space";
     setShowBack(isOnEventPage);
   }, [location]);
 
