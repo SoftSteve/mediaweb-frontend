@@ -51,10 +51,9 @@ export default function SpaceRoom() {
 
       if (newPosts.length > 0) {
         setPosts(prev => [...prev, ...newPosts]);
-        setOffset(prev => prev + newPosts.length); // Only increment by what you actually received
+        setOffset(prev => prev + newPosts.length); 
       }
 
-      // Determine if more data exists
       setHasMore(Boolean(data.next) && newPosts.length === LIMIT);
     } catch (err) {
       console.error('Failed to fetch posts:', err);
