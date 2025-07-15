@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 
 export default function SpaceHeader({ eventSpace }) {
+  if (!eventSpace) return null;
 
   const {
     cover_image = '',
@@ -14,7 +15,7 @@ export default function SpaceHeader({ eventSpace }) {
     <motion.div
       initial={{ opacity: 0, y: -40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className="w-full h-80 relative bg-gradient-to-b rounded-b-xl shadow-md from-[#ece7e3] to-white"
     >
       {/* Foreground content */}
