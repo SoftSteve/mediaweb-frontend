@@ -79,7 +79,7 @@ export default function Landing() {
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{ backgroundImage: "url('/background-img.png')" }}
         />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-primary">
+        <div className="relative z-10 flex flex-col items-center gap-14 justify-center pb-18 min-h-screen px-6 text-primary">
           <div className="max-w-2xl text-center space-y-4">
             <h1 className="font-semibold
               text-[clamp(1.75rem,5vw,3rem)]   /* scales smoothly 28-48px */
