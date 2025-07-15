@@ -11,7 +11,7 @@ import AccountSettings from './components/Profile/AccountSettings';
 import { AnimatePresence } from "framer-motion";
 import PageTransition from './components/PageTransition';
 import ScrollToTop from './components/ScrollToTop';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import JoinRoute from './JoinRoute';
 
 
@@ -111,6 +111,32 @@ function AppInner() {
 }
 
 export default function App() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+   if (!isMobile) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-[#222] text-white text-center p-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-4">Mobile Device Required</h1>
+          <p className="text-lg">
+            This app is designed for mobile. Please access it on a phone or resize your browser to a mobile width.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <main className="w-screen min-h-screen overflow-x-hidden bg-[#ece7e3] font-poppins">
