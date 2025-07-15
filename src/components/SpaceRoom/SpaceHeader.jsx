@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 
 export default function SpaceHeader({ eventSpace }) {
-  if (!eventSpace) return null;
 
   const {
     cover_image = '',
