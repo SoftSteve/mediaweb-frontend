@@ -100,10 +100,12 @@ export default function NavBar() {
         }}
       >
         {showBack ? (
-          <div className='text-[#3F3F44] flex flex-row gap-2'>
+          <motion.div 
+          whileTap={{scale:0.95}}
+          className='text-[#3F3F44] flex flex-row gap-2 items-center'>
             <BiArrowBack className="text-2xl" />
             <h1 className='text-xl'>Home</h1>
-          </div>
+          </motion.div>
         ) : (
           <img
             src="/final-logo.png"
