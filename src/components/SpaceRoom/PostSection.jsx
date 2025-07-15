@@ -1,12 +1,12 @@
 import { useState, useRef, Fragment } from 'react'
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
-import { MdAddPhotoAlternate } from 'react-icons/md'
-import { IoIosSend } from 'react-icons/io'
 import { useUser } from '../../UserContext'
 import { X } from 'lucide-react'
-import { IoShareOutline } from "react-icons/io5";
+import { IoShareOutline, IoImagesOutline} from "react-icons/io5";
 import { IoAdd } from "react-icons/io5";
 import CustomSpinner from '../CustomSpinner'
+import { IoMdArrowUp } from "react-icons/io";
+import Divider from '@mui/material/Divider';
 
 
 const MAX_IMAGES = 8
@@ -127,7 +127,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
               leaveFrom="translate-y-0"
               leaveTo="translate-y-full"
             >
-              <DialogPanel className="w-full h-full bg-white p-6 shadow-xl flex flex-col">
+              <DialogPanel className="w-full h-[90vh] bg-white p-6 shadow-xl flex flex-col rounded-t-2xl">
 
                 {/* top bar */}
                 <div className="relative mb-4 flex items-center justify-center">
@@ -148,7 +148,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
                     disabled={loading}
                     className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full p-2 bg-blue-500 text-white"
                     >
-                    {loading ? <CustomSpinner size={18}/> : <IoIosSend className="h-5 w-5" />}
+                    {loading ? <CustomSpinner size={18}/> : <IoMdArrowUp className="h-5 w-5" />}
                     </button>
                 </div>
 
@@ -160,6 +160,8 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
                     rows={3}
                     className="w-full rounded-md bg-white p-3 text-lg focus:outline-none"
                     />
+                    
+                    <Divider orientation="horizontal" variant="fullWidth"/>
 
                     {files.length > 0 && (
                     <div className="grid grid-cols-3 gap-2">
@@ -180,7 +182,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
                         onClick={() => fileRef.current?.click()}
                         className="flex items-center gap-1 text-blue-500"
                     >
-                        <MdAddPhotoAlternate className="text-4xl" />
+                        <IoImagesOutline className="text-3xl" />
                         {files.length > 0 && `(${files.length})`}
                     </button>
                     </div>
