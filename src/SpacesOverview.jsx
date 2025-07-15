@@ -11,7 +11,7 @@ export default function SpacesOverview() {
                 {/* Tabs */}
                 <div className="h-16 w-full flex flex-row items-center sticky top-0 bg-[#ece7e3] z-10">
                     <div className="w-full flex border-t border-border justify-center">
-                        {['spaces', 'overview', 'settings'].map((tab) => (
+                        {['spaces', 'overview', 'discover'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -31,7 +31,7 @@ export default function SpacesOverview() {
                 <div className="w-full">
                     {activeTab === 'spaces' && <MySpaces />}
                     {activeTab === 'overview' && <Overview />}
-                    {activeTab === 'settings' && <p>This is the settings panel.</p>}
+                    {activeTab === 'discover' && <p className="text-center text-2xl text-gray-400 mt-20">Coming Soon</p>}
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
-// src/components/NavBar.jsx
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { ArrowLeftToLine } from 'lucide-react';
 import { IoMdPersonAdd } from 'react-icons/io';
@@ -12,9 +11,11 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, setUser, loading } = useUser();  
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showBack, setShowBack] = useState(false);
 
   const getCsrfToken = () =>
     document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '';
@@ -77,20 +78,37 @@ export default function NavBar() {
       };
   }, [lastScrollY]);
 
+  useEffect(() => {
+    const isOnEventPage =
+      location.pathname.startsWith("/spaces/") &&
+      location.pathname !== "/spaces";
+    setShowBack(isOnEventPage);
+  }, [location]);
+
   return (
     <nav className={`h-20 flex justify-between items-center px-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3] transition-transform duration-300 ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-      <div className='flex flex-row items-center gap-1'>
-        <Link to="/" className="w-10 h-10 rounded-full bg-cover bg-center bg-gray-600"
-        style={{
-          backgroundImage: `url('/logocirc.png')`
-        }}>
-      </Link>
-      <h1 className='text-2xl font-semibold text-black'>
-        MemoryBranch
-      </h1>
+      <div
+        className="flex flex-row items-center gap-2 cursor-pointer"
+        onClick={() => {
+          if (showBack) {
+            navigate(-1);
+          } else {
+            navigate('/');
+          }
+        }}
+      >
+        <div
+          className="w-10 h-10 rounded-full bg-cover bg-center bg-gray-600"
+          style={{
+            backgroundImage: `url('/logocirc.png')`
+          }}
+        />
+        <h1 className="text-2xl font-semibold text-black">
+          {showBack ? "Back" : "MemoryBranch"}
+        </h1>
       </div>
       
       <ul className="hidden md:flex px-6">
