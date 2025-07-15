@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Tabs from './components/SpaceRoom/Tabs';
 import SpaceHeader from './components/SpaceRoom/SpaceHeader';
+import { motion } from 'framer-motion';
 
 const LIMIT = 2;
 
@@ -95,19 +96,49 @@ export default function SpaceRoom() {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        when: "beforeChildren"
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
+
   return (
-    <div className="w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white">
-      <SpaceHeader eventSpace={eventSpace}/>
-      <Tabs
-        eventSpaceId={id}
-        eventSpace={eventSpace}
-        spaceCode={eventSpace?.space_code}
-        posts={posts}
-        onPostCreated={handlePostCreated}
-        onDeletePost={handleDeletePost}
-        fetchMorePosts={loadPosts}
-        hasMore={hasMore}
-      />
-    </div>
+    <motion.div
+      className="w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div variants={itemVariants}>
+        <SpaceHeader eventSpace={eventSpace} />
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <Tabs
+          eventSpaceId={id}
+          eventSpace={eventSpace}
+          spaceCode={eventSpace?.space_code}
+          posts={posts}
+          onPostCreated={handlePostCreated}
+          onDeletePost={handleDeletePost}
+          fetchMorePosts={loadPosts}
+          hasMore={hasMore}
+        />
+      </motion.div>
+    </motion.div>
   );
 }
