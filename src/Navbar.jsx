@@ -87,12 +87,9 @@ export default function NavBar() {
   }, [location]);
 
   return (
-    <nav className={`h-20 flex justify-between items-center pr-8 fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3] transition-transform duration-300 ${
-        showNavbar ? 'translate-y-0' : '-translate-y-full'
-        }`}
-      >
+    <nav className={`h-20 flex justify-between items-center ${showBack ? 'px-8' : 'pr-8'} fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3] transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
       <div
-        className="flex flex-row mt-4 items-center gap-2 cursor-pointer"
+        className={`flex flex-row items-center gap-2 cursor-pointer ${showBack ? '' : 'mt-4'}`}
         onClick={() => {
           if (showBack) {
             navigate(-1);
@@ -103,8 +100,7 @@ export default function NavBar() {
       >
         {showBack ? (
           <>
-            <IoArrowBack className="text-3xl" />
-            <h1 className="text-2xl font-semibold text-black">Home</h1>
+            <IoArrowBack className="text-2xl" />
           </>
         ) : (
           <img
