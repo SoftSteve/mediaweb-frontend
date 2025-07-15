@@ -7,6 +7,7 @@ import { PiSignOutLight } from 'react-icons/pi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from './UserContext';
 import { IoArrowBack } from "react-icons/io5";
+import { BiArrowBack } from "react-icons/bi";
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -100,7 +101,7 @@ export default function NavBar() {
       >
         {showBack ? (
           <>
-            <IoArrowBack className="text-2xl" />
+            <BiArrowBack className="text-2xl" />
           </>
         ) : (
           <img
