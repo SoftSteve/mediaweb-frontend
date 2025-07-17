@@ -7,7 +7,7 @@ export default function SpacesOverview() {
 
     return (
         <div className="min-h-screen w-screen bg-[#ece7e3] pb-20">
-            <div className="flex flex-col pt-20">
+            <div className="flex flex-col pt-20 relative">
                 {/* Tabs */}
                 <div className="h-16 w-full flex flex-row items-center sticky top-0 bg-[#ece7e3] z-10">
                     <div className="w-full flex border-t border-border justify-center">

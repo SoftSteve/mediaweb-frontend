@@ -88,9 +88,9 @@ export default function NavBar() {
   }, [location]);
 
   return (
-    <nav className={`h-20 flex justify-between items-center ${showBack ? 'px-8' : 'pr-8'} fixed top-0 left-0 w-full z-50 text-primary bg-[#ece7e3] transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+    <nav className={`h-20 flex justify-between items-center ${showBack ? 'px-8' : 'pr-8'} fixed z-40 top-0 left-0 w-full text-primary bg-[#ece7e3] transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
       <div
-        className={`flex flex-row items-center gap-2 cursor-pointer ${showBack ? '' : 'mt-4'}`}
+        className={`relative z-10 flex items-center gap-2 cursor-pointer ${showBack ? '' : 'mt-4'}`}
         onClick={() => {
           if (showBack) {
             navigate(-1);
@@ -101,17 +101,20 @@ export default function NavBar() {
       >
         {showBack ? (
           <motion.div 
-          whileTap={{scale:0.95}}
-          className='text-[#3F3F44] flex flex-row gap-2 items-center'>
+            whileTap={{ scale: 0.95 }}
+            className="text-[#3F3F44] flex flex-row gap-2 items-center"
+          >
             <BiArrowBack className="text-2xl" />
-            <h1 className='text-xl'>Home</h1>
+            <h1 className="text-xl">Home</h1>
           </motion.div>
         ) : (
-          <img
-            src="/final-logo.png"
-            alt="MemoryBranch Logo"
-            className="w-60 object-contain"
-          />
+          <div className="relative z-10 pl-4 flex justify-center">
+            <img
+              src="/final-logo.png"
+              alt="MemoryBranch Logo"
+              className="w-60 object-contain"
+            />
+            </div>
         )}
       </div>
       
@@ -150,7 +153,7 @@ export default function NavBar() {
         {menuOpen && (
           <motion.div
             ref={menuRef}
-            className="h-screen flex flex-col fixed top-0 left-0 w-4/5 shadow-xl md:hidden z-40"
+            className="h-screen flex flex-col fixed top-0 left-0 z-[9999] w-4/5 shadow-xl md:hidden"
             initial={{ x: -400 }}
             animate={{ x: 0 }}
             exit={{ x: -400 }}
