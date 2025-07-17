@@ -65,7 +65,7 @@ export default function MySpaces() {
         )}
       </div>
 
-      <div className="flex w-full px-6 items-center justify-center gap-4">
+      <div className="flex w-full px-6 mb-2 items-center justify-center gap-4">
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setSearchOpen(true)}
@@ -88,10 +88,10 @@ export default function MySpaces() {
         {(query ? filtered : spaces).map((space, i) => (
           <motion.div
           key={space.id}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: i * 0.15,
+            delay: i * 0.20,
             duration: 0.35,
             ease: "easeOut",
           }}
