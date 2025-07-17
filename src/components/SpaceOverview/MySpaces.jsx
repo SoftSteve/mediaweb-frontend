@@ -88,14 +88,13 @@ export default function MySpaces() {
         {(query ? filtered : spaces).map((space, i) => (
           <motion.div
           key={space.id}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: i * 0.20,
+            delay: i * 0.05,
             duration: 0.35,
             ease: "easeOut",
           }}
-          whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate(`/space/${space.id}`)}
           className="relative cursor-pointer rounded-xl shadow-lg overflow-hidden bg-white transition-all"
