@@ -5,6 +5,7 @@ import { IoSearch, IoShareSocialOutline } from "react-icons/io5";
 import axios from "axios";
 import CreateModal from "./CreateSpaceModal";
 import SearchSpaceModal from "./SearchSpaceModal";
+import { IoShareOutline } from "react-icons/io5";
 
 export default function MySpaces() {
   const navigate = useNavigate();
@@ -83,27 +84,45 @@ export default function MySpaces() {
         <CreateModal handleSpaceCreated={handleSpaceCreated} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="min-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {(query ? filtered : spaces).map((space, i) => (
           <motion.div
-            key={space.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: i * 0.15,
-              duration: 0.35,
-              ease: "easeOut",
-            }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate(`/space/${space.id}`)}
-            className="min-w-full h-60 rounded-xl bg-cover bg-center cursor-pointer shadow-md"
+          key={space.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: i * 0.15,
+            duration: 0.35,
+            ease: "easeOut",
+          }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => navigate(`/space/${space.id}`)}
+          className="relative cursor-pointer rounded-xl shadow-lg overflow-hidden bg-white transition-all"
+        >
+          <div
+            className="h-48 bg-cover bg-center"
             style={{ backgroundImage: `url(${space.cover_image})` }}
+          />
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigator.share?.({
+                title: "Lehman Wedding",
+                url: `${window.location.origin}/space/${space.id}`
+              }) || alert("Sharing not supported in this browser.");
+            }}
+            className="absolute top-2 right-2 p-2 bg-black/30 backdrop-blur-md rounded-full hover:bg-black/50 transition"
           >
-            <div className="flex h-full w-full items-end rounded-xl bg-black/30 p-6 text-xl font-semibold text-white">
-              {space.name}
-            </div>
-          </motion.div>
+            <IoShareOutline className="text-xl text-white" />
+          </button>
+
+          <div className="p-4 bg-white rounded-b-xl flex flex-col gap-1">
+            <h2 className="text-lg font-semibold text-gray-800">{space.name}</h2>
+            <span className="text-sm text-gray-500">{space.members.length} Members</span>
+          </div>
+        </motion.div>
         ))}
       </div>
 

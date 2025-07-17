@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Overview from './components/SpaceOverview/Overview';
+import Overview from './components/SpaceOverview/Overview'
 import MySpaces from './components/SpaceOverview/MySpaces';
 
 export default function SpacesOverview() {
@@ -14,6 +14,7 @@ export default function SpacesOverview() {
                         {['spaces', 'overview', 'discover'].map((tab) => (
                             <button
                                 key={tab}
+                                type="button"
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-4 py-2 font-medium capitalize transition-colors ${
                                     activeTab === tab
