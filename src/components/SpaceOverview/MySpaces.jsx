@@ -87,41 +87,45 @@ export default function MySpaces() {
       <div className="min-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {(query ? filtered : spaces).map((space, i) => (
           <motion.div
-          key={space.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: i * 0.05,
-            duration: 0.35,
-            ease: "easeOut",
-          }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate(`/space/${space.id}`)}
-          className="relative cursor-pointer rounded-xl shadow-lg overflow-hidden bg-white transition-all"
-        >
-          <div
-            className="h-48 bg-cover bg-center"
-            style={{ backgroundImage: `url(${space.cover_image})` }}
-          />
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigator.share?.({
-                title: "Lehman Wedding",
-                url: `${window.location.origin}/space/${space.id}`
-              }) || alert("Sharing not supported in this browser.");
+            layout
+            key={space.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{
+              delay: i * 0.05,
+              duration: 0.35,
+              ease: "easeOut",
             }}
-            className="absolute top-2 right-2 p-2 bg-black/30 backdrop-blur-md rounded-full hover:bg-black/50 transition"
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate(`/space/${space.id}`)}
+            className="relative cursor-pointer rounded-xl shadow-lg overflow-hidden bg-white"
           >
-            <IoShareOutline className="text-xl text-white" />
-          </button>
+            <img src={space.cover_image} className="hidden" />
 
-          <div className="p-4 bg-white rounded-b-xl flex flex-col gap-1">
-            <h2 className="text-lg font-semibold text-gray-800">{space.name}</h2>
-            <span className="text-sm text-gray-500">{space.members.length} Members</span>
-          </div>
-        </motion.div>
+            <div
+              className="h-48 bg-cover bg-center"
+              style={{ backgroundImage: `url(${space.cover_image})` }}
+            />
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigator.share?.({
+                  title: "Lehman Wedding",
+                  url: `${window.location.origin}/space/${space.id}`
+                }) || alert("Sharing not supported in this browser.");
+              }}
+              className="absolute top-2 right-2 p-2 bg-black/30 backdrop-blur-md rounded-full hover:bg-black/50 transition"
+            >
+              <IoShareOutline className="text-xl text-white" />
+            </button>
+
+            <div className="p-4 bg-white rounded-b-xl flex flex-col gap-1">
+              <h2 className="text-lg font-semibold text-gray-800">{space.name}</h2>
+              <span className="text-sm text-gray-500">{space.members.length} Members</span>
+            </div>
+          </motion.div>
         ))}
       </div>
 
