@@ -25,6 +25,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
       if (navigator.share) {
         await navigator.share({
           title: `Join my space - SpaceCode: ${spaceCode}`,
+          text: `Remember this? Enter this code for access: ${spaceCode}`,
           url: shareUrl,
         })
       } else {
