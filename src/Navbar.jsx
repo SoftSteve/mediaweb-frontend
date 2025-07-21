@@ -88,7 +88,7 @@ export default function NavBar() {
   }, [location]);
 
   return (
-    <nav className={`h-20 flex justify-between items-center ${showBack ? 'px-8' : 'pr-8'} fixed z-40 top-0 left-0 w-full text-primary bg-[#ece7e3] transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+    <nav className={`h-20 flex justify-between items-center ${showBack ? 'px-8 bg-white' : 'pr-8 bg-[#ece7e3]'} fixed z-40 top-0 left-0 w-full text-primary transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
       <div
         className={`relative z-10 flex items-center gap-2 cursor-pointer ${showBack ? '' : 'mt-4'}`}
         onClick={() => {
