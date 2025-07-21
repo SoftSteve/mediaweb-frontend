@@ -12,7 +12,7 @@ export default function SpaceHeader({eventSpace}) {
   return (
     <div
       className="w-full h-40 sm:h-56 relative bg-cover bg-center shadow-lg overflow-hidden"
-      style={{ backgroundImage: `url('wedding.jpg')` }}
+      style={{ backgroundImage: `url(${cover_image})` }}
       >
       {/* Optional: dark gradient overlay for readability */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
@@ -37,8 +37,8 @@ export default function SpaceHeader({eventSpace}) {
               <p className="text-xs sm:text-sm">Posts</p>
             </div>
             <div className="text-center">
-              <h2 className="text-xl font-semibold">12</h2>
-              <p className="text-xs sm:text-sm">{members?.length}</p>
+              <h2 className="text-xl font-semibold">{members?.length || 0}</h2>
+              <p className="text-xs sm:text-sm">Members</p>
             </div>
           </div>
         </div>
