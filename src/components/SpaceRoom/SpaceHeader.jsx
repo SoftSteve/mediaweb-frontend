@@ -10,34 +10,35 @@ export default function SpaceHeader({eventSpace}) {
     } = eventSpace;
    
   return (
-    <div className="w-full h-40 sm:h-56 relative bg-gradient-to-br from-amber-50 via-white to-blue-50 shadow-lg overflow-hidden">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#ece7e3] to-white backdrop-blur-sm"></div>
+    <div
+      className="w-full h-40 sm:h-56 relative bg-cover bg-center shadow-lg overflow-hidden"
+      style={{ backgroundImage: `url('wedding.jpg')` }}
+      >
+      {/* Optional: dark gradient overlay for readability */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
       {/* Foreground Row */}
-      <div className="relative z-10 h-full px-4 sm:px-8 flex items-center gap-4 sm:gap-6 max-w-7xl mx-auto">
-        {/* Avatar */}
-        <div
-          className="h-24 w-24 sm:h-24 sm:w-24 rounded-full bg-cover bg-center shadow-xl border-2 border-white transition-transform duration-300 hover:scale-105 shrink-0"
-          style={{ backgroundImage: `url(${cover_image})` }}
-        />
+      <div className="relative z-10 h-full px-4 sm:px-8 flex items-center justify-center gap-6 max-w-7xl mx-auto text-white">
+        {/* Avatar (optional) */}
+        <div className="h-24 w-24 rounded-full bg-cover bg-center shadow-lg border-2 border-white shrink-0"
+            style={{ backgroundImage: `url(${cover_image})` }} />
 
         {/* Text Column */}
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center items-start">
           {/* Title */}
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display tracking-tight whitespace-nowrap overflow-hidden text-ellipsis max-w-xs sm:max-w-md md:max-w-lg">
+          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight whitespace-nowrap overflow-hidden text-ellipsis max-w-xs sm:max-w-md md:max-w-lg">
             {name}
           </h1>
 
           {/* Stats */}
-          <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-4 sm:gap-8 text-center">
-            <div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">{posts?.length || 0}</h2>
-              <p className="text-xs sm:text-sm text-gray-500 font-sans">Posts</p>
+          <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-6 text-sm sm:text-base text-white/90">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold">{posts?.length || 0}</h2>
+              <p className="text-xs sm:text-sm">Posts</p>
             </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">{members?.length || 0}</h2>
-              <p className="text-xs sm:text-sm text-gray-500 font-sans">Members</p>
+            <div className="text-center">
+              <h2 className="text-xl font-semibold">12</h2>
+              <p className="text-xs sm:text-sm">{members?.length}</p>
             </div>
           </div>
         </div>
