@@ -118,9 +118,7 @@ export default function SpaceRoom() {
 
   return (
     <motion.div
-      className={`w-screen min-h-screen flex flex-col pb-20 mt-20 transition-colors duration-500 ${
-        eventSpace ? 'bg-white' : 'bg-[#ece7e3]'
-      }`}
+      className='w-screen min-h-screen flex flex-col pb-20 mt-20 transition-colors duration-500 bg-white'
       variants={containerVariants}
       initial="hidden"
       animate="visible"
