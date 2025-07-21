@@ -5,89 +5,44 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/zoom";
 
-function getAspectClass(width, height) {
-  if (!width || !height) return "aspect-[4/5]";
 
-  const ratio = width / height;
-
-  if (ratio > 1.91) return "aspect-[1.91/1]";
-  if (ratio < 0.8) return "aspect-[4/5]";
-  return "aspect-[4/5]";
-}
 
 export default function AboutPage() {
-  const [aspectClass, setAspectClass] = useState("aspect-square");
-  const swiperRef = useRef(null);
-
-  const dummyImages = [
-    { id: 1, image: "wedding.jpg" },
-    { id: 2, image: "brosis.JPEG" },
-    { id: 3, image: "final-logo.png" },
-    { id: 4, image: "raven.jpg" },
-    { id: 5, image: "bean.jpg" },
-  ];
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = dummyImages[0].image;
-    img.onload = () => {
-      console.log("Loaded image size:", img.width, "x", img.height);
-      const aspect = getAspectClass(img.width, img.height);
-      console.log("Determined aspect class:", aspect);
-      setAspectClass(aspect);
-    };
-  }, []);
-
-  useEffect(() => {
-    function logSizes() {
-      if (!swiperRef.current) return;
-
-      const swiperEl = swiperRef.current;
-      console.log("Swiper container size:", swiperEl.offsetWidth, "x", swiperEl.offsetHeight);
-
-      const slides = swiperEl.querySelectorAll(".swiper-slide");
-      slides.forEach((slide, i) => {
-        console.log(`Slide ${i} size:`, slide.offsetWidth, "x", slide.offsetHeight);
-      });
-    }
-
-    logSizes();
-    window.addEventListener("resize", logSizes);
-    return () => window.removeEventListener("resize", logSizes);
-  }, [aspectClass]);
-
   return (
-    <div className="w-screen min-h-screen flex flex-col justify-center items-center">
-      <Swiper
-        ref={swiperRef}
-        modules={[Pagination, Zoom]}
-        zoom
-        slidesPerView={1}
-        className={`${aspectClass} w-full overflow-hidden md:rounded-md md:border border-gray-300 md:border-0`}
-        pagination={{ clickable: true, type: "bullets", dynamicBullets: true }}
-      >
-        {dummyImages.map((img, i) => (
-          <SwiperSlide key={img.id} className="relative w-full h-full">
-            {/* Background Blur */}
-            <img
-              src={img.image}
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-fill blur-lg scale-100 opacity-40 z-0"
-            />
+   <div className="w-screen min-h-screen flex flex-col bg-white">
+          <div className="w-full h-40 sm:h-56 relative bg-gradient-to-br from-amber-50 via-white to-blue-50 shadow-lg overflow-hidden">
+            {/* Background Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#ece7e3] to-white backdrop-blur-sm"></div>
 
-            {/* Foreground Image with border and centered container */}
-            <div className="swiper-zoom-container relative z-10 h-full w-full flex items-center justify-center">
-              <img
-                loading="lazy"
-                src={img.image}
-                alt={`post-media-${i}`}
-                className="h-full w-full object-fill"
+            {/* Foreground Row */}
+            <div className="relative z-10 h-full px-4 sm:px-8 flex items-center gap-4 sm:gap-6 max-w-7xl mx-auto">
+              {/* Avatar */}
+              <div
+                className="h-24 w-24 sm:h-24 sm:w-24 rounded-full bg-cover bg-center shadow-xl border-2 border-white transition-transform duration-300 hover:scale-105 shrink-0"
+                style={{ backgroundImage: `url(${cover_image})` }}
               />
+
+              {/* Text Column */}
+              <div className="flex flex-col justify-center">
+                {/* Title */}
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-display tracking-tight whitespace-nowrap overflow-hidden text-ellipsis max-w-xs sm:max-w-md md:max-w-lg">
+                  {name}
+                </h1>
+
+                {/* Stats */}
+                <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-4 sm:gap-8 text-center">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800">{posts?.length || 0}</h2>
+                    <p className="text-xs sm:text-sm text-gray-500 font-sans">Posts</p>
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800">{members?.length || 0}</h2>
+                    <p className="text-xs sm:text-sm text-gray-500 font-sans">Members</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  );
+          </div>
+        </div>
+  )
 }

@@ -1,10 +1,9 @@
-// src/Signin.jsx
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Divider from '@mui/material/Divider';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { API_URL } from './config.js';         // ← Import API_URL
 import { useUser } from './UserContext.jsx';
 import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
 import IconButton from './components/IconButton.jsx';
