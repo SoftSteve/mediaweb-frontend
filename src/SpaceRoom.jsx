@@ -117,28 +117,29 @@ export default function SpaceRoom() {
   };
 
   return (
-    <motion.div
-      className='w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white'
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.div variants={itemVariants}>
-        <SpaceHeader eventSpace={eventSpace} />
-      </motion.div>
+    <div className='w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white'>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants}>
+          <SpaceHeader eventSpace={eventSpace} />
+        </motion.div>
 
-      <motion.div variants={itemVariants}>
-        <Tabs
-          eventSpaceId={id}
-          eventSpace={eventSpace}
-          spaceCode={eventSpace?.space_code}
-          posts={posts}
-          onPostCreated={handlePostCreated}
-          onDeletePost={handleDeletePost}
-          fetchMorePosts={loadPosts}
-          hasMore={hasMore}
-        />
+        <motion.div variants={itemVariants}>
+          <Tabs
+            eventSpaceId={id}
+            eventSpace={eventSpace}
+            spaceCode={eventSpace?.space_code}
+            posts={posts}
+            onPostCreated={handlePostCreated}
+            onDeletePost={handleDeletePost}
+            fetchMorePosts={loadPosts}
+            hasMore={hasMore}
+          />
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
