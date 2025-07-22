@@ -137,7 +137,7 @@ export default function App() {
 
   return (
     <Router>
-      <main className="w-screen min-h-screen overflow-x-hidden bg-[#ece7e3] font-poppins">
+      <main className="w-screen min-h-screen overflow-x-hidden font-poppins">
         <AppInner />
       </main>
     </Router>
