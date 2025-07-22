@@ -233,23 +233,23 @@ export default function NavBar() {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className="relative z-10 w-full max-w-sm transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl"
               >
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  Are you sure?
-                </Dialog.Title>
+                <DialogTitle as="h3" className="text-lg font-medium text-center leading-6 text-gray-900">
+                  Sign Out
+                </DialogTitle>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-center text-gray-500">
                     Are you sure you want to sign out?
                   </p>
                 </div>
                 <div className="mt-4 flex justify-end gap-3">
                   <button
-                    className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+                    className="px-4 py-2 bg-surface text-gray-800 rounded-xl hover:bg-gray-200"
                     onClick={() => setShowLogoutConfirm(false)}
                   >
                     Cancel
                   </button>
                   <button
-                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                    className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-red-600"
                     onClick={() => {
                       setShowLogoutConfirm(false);
                       handleLogout();
