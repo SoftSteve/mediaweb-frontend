@@ -26,7 +26,7 @@ export default function Tabs({ eventSpaceId, eventSpace={eventSpace}, spaceCode,
     <div>
       <div
       ref={tabRef} 
-      className="h-16 w-full flex flex-row items-center bg-white">
+      className="h-16 w-full flex flex-row items-center bg-[#ece7e3]">
         <div className="w-full flex justify-center">
           {['timeline', 'gallery', 'more'].map((tab) => (
             <button

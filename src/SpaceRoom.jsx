@@ -117,7 +117,7 @@ export default function SpaceRoom() {
   };
 
   return (
-    <div className='w-screen min-h-screen flex flex-col pb-20 mt-20 bg-white'>
+    <div className='w-screen min-h-screen flex flex-col pb-20 mt-20 bg-[#ece7e3]'>
       <motion.div
         variants={containerVariants}
         initial="hidden"
