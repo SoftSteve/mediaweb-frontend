@@ -67,7 +67,7 @@ function PostGallery({ images }) {
             src={img.image}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-60 z-0"
+            className="absolute inset-0 w-full h-full object-cover blur-lg scale-100 opacity-60 z-0"
           />
 
           <div className="swiper-zoom-container relative z-10 h-full w-full">
