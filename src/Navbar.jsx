@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Fragment } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { ArrowLeftToLine } from 'lucide-react';
@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from './UserContext';
 import { IoArrowBack } from "react-icons/io5";
 import { BiArrowBack } from "react-icons/bi";
+import { Dialog, Transition, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +19,7 @@ export default function NavBar() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showBack, setShowBack] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const getCsrfToken = () =>
     document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)?.[1] || '';
@@ -180,7 +182,7 @@ export default function NavBar() {
               </div>
 
               {user ? (
-                <button onClick={handleLogout} className="text-white">
+                <button onClick={() => setShowLogoutConfirm(true)} className="text-white">
                   <PiSignOutLight className="text-2xl" />
                 </button>
               ) : (
@@ -212,6 +214,65 @@ export default function NavBar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <Transition appear show={showLogoutConfirm} as={Fragment}>
+        <Dialog as="div" className="relative z-[99999]" onClose={() => setShowLogoutConfirm(false)}>
+          <Transition
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-30" />
+          </Transition>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <TransitionChild
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <DialogPanel className="w-full max-w-sm transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                    Are you sure?
+                  </DialogTitle>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      Are you sure you want to sign out?
+                    </p>
+                  </div>
+
+                  <div className="mt-4 flex justify-end gap-3">
+                    <button
+                      className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+                      onClick={() => setShowLogoutConfirm(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                      onClick={() => {
+                        setShowLogoutConfirm(false);
+                        handleLogout();
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </nav>
   );
 }
