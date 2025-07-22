@@ -91,9 +91,7 @@ function AppInner() {
           <Route
             path="/space/:id"
             element={
-              <PageTransition>
                 <SpaceRoom />
-              </PageTransition>
             }
           />
           <Route path="/join/:code" 
