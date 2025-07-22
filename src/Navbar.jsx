@@ -215,64 +215,53 @@ export default function NavBar() {
         )}
       </AnimatePresence>
 
-      <Transition appear show={showLogoutConfirm} as={Fragment}>
-        <Dialog as="div" className="relative z-[99999]" onClose={() => setShowLogoutConfirm(false)}>
-          <Transition
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-30" />
-          </Transition>
+      <Transition
+          appear
+          show={showLogoutConfirm}
+          as={Fragment}
+        >
+          <Dialog as="div" className="relative z-[99999]" onClose={() => setShowLogoutConfirm(false)}>
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              {/* BACKDROP */}
+              <div className="fixed inset-0 bg-black bg-opacity-30 transition-opacity" />
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <TransitionChild
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
+              {/* MODAL PANEL */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="relative z-10 w-full max-w-sm transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl"
               >
-                <DialogPanel className="w-full max-w-sm transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                    Are you sure?
-                  </DialogTitle>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Are you sure you want to sign out?
-                    </p>
-                  </div>
-
-                  <div className="mt-4 flex justify-end gap-3">
-                    <button
-                      className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
-                      onClick={() => setShowLogoutConfirm(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                      onClick={() => {
-                        setShowLogoutConfirm(false);
-                        handleLogout();
-                      }}
-                    >
-                      Sign out
-                    </button>
-                  </div>
-                </DialogPanel>
-              </TransitionChild>
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                  Are you sure?
+                </Dialog.Title>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Are you sure you want to sign out?
+                  </p>
+                </div>
+                <div className="mt-4 flex justify-end gap-3">
+                  <button
+                    className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+                    onClick={() => setShowLogoutConfirm(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                    onClick={() => {
+                      setShowLogoutConfirm(false);
+                      handleLogout();
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        </Dialog>
-      </Transition>
+          </Dialog>
+        </Transition>
     </nav>
   );
 }
