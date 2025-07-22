@@ -28,7 +28,7 @@ function PostHeader({ avatar, name, time, onOptions }) {
         className="h-10 w-10 rounded-full object-cover"
       />
       <div className="flex flex-1 flex-col">
-        <span className="text-base font-semibold text-secondary">{name}</span>
+        <span className="text-base font-semibold text-secondary/80">{name}</span>
         <time className="text-xs text-secondary/50">{time}</time>
       </div>
       <button onClick={onOptions} className="p-2 text-secondary/80 hover:text-secondary">

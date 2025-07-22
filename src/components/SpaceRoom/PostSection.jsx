@@ -88,7 +88,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
                       md:w-1/3 md:self-center md:mr-12 transition-all duration-200">
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 bg-primary text-white font-medium rounded-full px-4 py-2 hover:shadow-md hover:bg-primary/90 transition-all duration-150"
+          className="flex items-center gap-2 bg-primary text-white font-medium rounded-full shadow-md px-4 py-2 hover:shadow-md hover:bg-primary/90 transition-all duration-150"
         >
           <IoAdd className="text-2xl"/>
           Create Post
@@ -96,7 +96,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
 
         <button
           onClick={handleShare}
-          className="flex items-center gap-2 bg-surface text-secondary font-medium rounded-full px-4 py-2 hover:shadow-md hover:bg-surface/80 transition-all duration-150"
+          className="flex items-center gap-2 bg-surface text-secondary font-medium rounded-full shadow-md px-4 py-2 hover:shadow-md hover:bg-surface/80 transition-all duration-150"
         >
           <IoShareOutline className="text-xl"/>
           Share Space
