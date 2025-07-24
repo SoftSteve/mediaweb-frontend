@@ -16,6 +16,7 @@ export default function CreateAccount() {
   const navigate = useNavigate();
   const spaceCode = useLocation().state?.spaceCode
   const { setUser } = useUser();
+  const [loading, setLoading] = useState(false);
 
   function getCsrfTokenFromCookie() {
     const match = document.cookie.match(/csrftoken=([^;]+)/);
@@ -25,6 +26,7 @@ export default function CreateAccount() {
   const handleSubmit = async (e) => {
   e.preventDefault();
   setError('');
+  setLoading(true);
 
   const formData = new FormData();
   formData.append('username', username);
@@ -78,6 +80,8 @@ export default function CreateAccount() {
     navigate('/');
   } catch (err) {
     setError(err.message || 'An unexpected error occurred.');
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -134,13 +138,22 @@ export default function CreateAccount() {
           </div>
 
           {error && <p className="text-red-500">{error}</p>}
-          <motion.input
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            type="submit"
-            value="Create Account"
-            className="w-full p-3 bg-secondary text-white rounded-2xl mt-4"
-          />
+          <div className="w-full">
+            {loading ? (
+              <div className="flex justify-center items-center h-[52px] bg-secondary text-white rounded-2xl">
+                <CustomSpinner size={24} color="text-white" />
+              </div>
+            ) : (
+              <motion.input
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 600, damping: 30 }}
+                name="submit"
+                type="submit"
+                value="Sign In"
+                className="w-full p-3 bg-secondary text-white rounded-2xl cursor-pointer"
+              />
+            )}
+          </div>
         </form>
       </div>
     </div>

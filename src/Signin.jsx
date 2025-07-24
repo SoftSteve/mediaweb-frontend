@@ -174,7 +174,7 @@ export default function Signin() {
             ) : (
               <motion.input
                 whileTap={{ scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 600, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 600, damping: 30 }}
                 name="submit"
                 type="submit"
                 value="Sign In"
