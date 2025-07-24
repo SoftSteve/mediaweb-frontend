@@ -9,6 +9,7 @@ import ChoiceModal from './components/SignIn/CreateAccountModal.jsx';
 import IconButton from './components/IconButton.jsx';
 import { GoogleIcon } from './components/CustomIcons.tsx';
 import useSpaceCode from './useSpaceCode.jsx';
+import CustomSpinner from './components/CustomSpinner.jsx';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ export default function Signin() {
   const [csrfToken, setCsrfToken] = useState('');
   const [csrfReady, setCsrfReady] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,6 +47,7 @@ export default function Signin() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     if (!csrfToken) {
       setError('CSRF token missing. Please refresh the page.');
@@ -97,6 +100,8 @@ export default function Signin() {
       navigate('/');
     } catch (err) {
       setError('Unexpected error. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -161,14 +166,22 @@ export default function Signin() {
 
           {error && <p className="text-red-600">{error}</p>}
 
-          <motion.input
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 600, damping: 10 }}
-            name="submit"
-            type="submit"
-            value="Sign In"
-            className="w-full p-3 bg-secondary text-white rounded-2xl cursor-pointer"
-          />
+          <div className="w-full">
+            {loading ? (
+              <div className="flex justify-center items-center h-[52px] bg-secondary text-white rounded-2xl">
+                <CustomSpinner size={24} color="text-white" />
+              </div>
+            ) : (
+              <motion.input
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 600, damping: 10 }}
+                name="submit"
+                type="submit"
+                value="Sign In"
+                className="w-full p-3 bg-secondary text-white rounded-2xl cursor-pointer"
+              />
+            )}
+          </div>
         </form>
 
         <div className="flex flex-row my-4 gap-1 justify-center items-center">
