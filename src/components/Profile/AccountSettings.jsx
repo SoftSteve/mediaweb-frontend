@@ -1,6 +1,10 @@
 import { useUser } from "../../UserContext";
 import { useState, useEffect } from 'react';
-import { API_URL } from "../../config";
+import CustomSpinner from '../CustomSpinner';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 export default function AccountSettings() {
   const { user, setUser } = useUser();
@@ -10,6 +14,9 @@ export default function AccountSettings() {
     display_name: '',
     profile_picture: null,
   });
+
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -29,41 +36,39 @@ export default function AccountSettings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const data = new FormData();
-    if (formData.username.trim()) {
-        data.append('username', formData.username);
-    }
-    if (formData.display_name.trim()) {
-        data.append('display_name', formData.display_name);
-    }
-    if (formData.profile_picture instanceof File) {
-        data.append('profile_picture', formData.profile_picture);
-    }
+    if (formData.username.trim()) data.append('username', formData.username);
+    if (formData.display_name.trim()) data.append('display_name', formData.display_name);
+    if (formData.profile_picture instanceof File)
+      data.append('profile_picture', formData.profile_picture);
 
     try {
-        const res = await fetch(`https://api.memory-branch.com/api/auth/update-account/`, {
+      const res = await fetch(`https://api.memory-branch.com/api/auth/update-account/`, {
         method: 'PATCH',
         body: data,
         credentials: 'include',
         headers: {
-            'X-CSRFToken': getCsrfTokenFromCookie(),
+          'X-CSRFToken': getCsrfTokenFromCookie(),
         },
-        });
+      });
 
-        const result = await res.json();
+      const result = await res.json();
 
-        if (!res.ok) {
+      if (!res.ok) {
         console.error('[DEBUG] Error updating user:', result);
         return;
-        }
+      }
 
-        console.log('[DEBUG] User updated:', result);
-        setUser((prev) => ({ ...prev, ...result }));
+      setUser((prev) => ({ ...prev, ...result }));
+      setSnackbarOpen(true);
     } catch (err) {
-        console.error('[DEBUG] Network or unexpected error:', err);
+      console.error('[DEBUG] Network or unexpected error:', err);
+    } finally {
+      setLoading(false);
     }
-    };
+  };
 
   return (
     <div className="w-full flex flex-col mt-20">
@@ -107,12 +112,32 @@ export default function AccountSettings() {
           className="p-2 border rounded bg-gray-100"
         />
 
-        <input
-          className="w-1/4 p-2 bg-blue-500 text-white self-end mt-2 cursor-pointer"
+        <button
           type="submit"
-          value="Save"
-        />
+          className="w-1/4 p-2 bg-blue-500 text-white self-end mt-2 flex items-center justify-center gap-2"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <CustomSpinner size={20} color="text-white" />
+            </>
+          ) : (
+            'Save'
+          )}
+        </button>
       </form>
+
+      {/* ✅ Snackbar Notification */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          Account updated successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
