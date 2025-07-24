@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import Input from './components/TextInput';
-import { Mail, User, Lock } from 'lucide-react'; 
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from './UserContext';
-import { API_URL } from './config';
+import CustomSpinner from './components/CustomSpinner';
+
 
 export default function CreateAccount() {
   const [password, setPassword] = useState('');
