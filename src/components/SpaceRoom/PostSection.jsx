@@ -149,7 +149,7 @@ export default function PostSection({ eventSpaceId, onPostCreated, spaceCode }) 
                     disabled={loading}
                     className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full p-2 bg-blue-500 text-white"
                     >
-                    {loading ? <CustomSpinner size={18}/> : <IoMdArrowUp className="h-5 w-5" />}
+                    {loading ? <CustomSpinner size={20} color='text-white' /> : <IoMdArrowUp className="h-5 w-5" />}
                     </button>
                 </div>
 
