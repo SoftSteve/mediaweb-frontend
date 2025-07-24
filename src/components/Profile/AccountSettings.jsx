@@ -114,7 +114,7 @@ export default function AccountSettings() {
 
         <button
           type="submit"
-          className="w-1/4 p-2 bg-blue-500 text-white self-end mt-2 flex items-center justify-center gap-2"
+          className="w-1/4 p-2 bg-primary rounded-xl text-white shadow-md self-end mt-2 flex items-center justify-center gap-2"
           disabled={loading}
         >
           {loading ? (
