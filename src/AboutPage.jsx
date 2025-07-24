@@ -1,10 +1,4 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Zoom } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/zoom";
-import { useState, useEffect } from "react";
-
+import AdSenseAd from "./components/Ads/AdComponent";
 
 export default function AboutPage() {
   return (

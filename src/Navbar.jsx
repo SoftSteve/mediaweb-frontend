@@ -6,16 +6,15 @@ import { IoMdPersonAdd } from 'react-icons/io';
 import { PiSignOutLight } from 'react-icons/pi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from './UserContext';
-import { IoArrowBack } from "react-icons/io5";
 import { BiArrowBack } from "react-icons/bi";
-import { Dialog, Transition, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+import { Dialog, Transition, DialogTitle} from '@headlessui/react';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, setUser, loading } = useUser();  
+  const { user, setUser} = useUser();  
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showBack, setShowBack] = useState(false);
